@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { Canvas } from "canvas";
-import { Ref, VNodeRef, onMounted, ref } from "vue";
+import { Ref, onMounted, ref } from "vue";
 
 const canvas1 = ref();
 const canvas2 = ref();
@@ -43,13 +43,18 @@ const drawLine = (canvas: Ref<any>, arr: Array<number>, maxValue: number) => {
 	const width = canvas.value.width;
 	const height = canvas.value.height;
 	// 绘制频谱
+	ctx.fillStyle = "rgb(200, 200, 200)";
+	ctx.fillRect(0, 0, width, height);
+	const barWidth = (width / arr.length) * 2.5;
+	let x = 0;
 	for (let i = 0; i < arr.length; i++) {
-		let value = (arr[i] / maxValue) * height;
-		const width = canvas.value.width / arr.length;
-		ctx.fillStyle = `rgb( ${value * Math.random() * 0.3}, ${
-			value * Math.random() * 0.3
-		},  ${value * Math.random() * 0.3})`;
-		ctx.fillRect(i * width, height - value, width, value);
+		const barHeight = arr[i];
+		const r = barHeight + 25 * (i / maxValue);
+		const g = 250 * (i / maxValue);
+		const b = 50;
+		ctx.fillStyle = `rgb(${r},${g},${b})`;
+		ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+		x += barWidth + 1;
 	}
 };
 
@@ -62,7 +67,7 @@ const drawCircle = (canvas: Ref<any>, arr: Array<number>, maxValue: number) => {
 	const count = arr.length;
 	const centerX = width / 2;
 	const centerY = height / 2;
-	const inRadius = 100;
+	const inRadius = 80;
 	const outRadius = 135;
 	const base = maxValue * 0.3;
 	const step = (2 * Math.PI) / count;
@@ -94,7 +99,6 @@ const drawCircle = (canvas: Ref<any>, arr: Array<number>, maxValue: number) => {
 		ctx.lineWidth = size * 2;
 		ctx.moveTo(x, y); // 将起始点移动到当前点
 		ctx.lineTo(endX, endY); // 绘制直线连接起始点和结束点
-		console.log(x, y, endX, endY);
 		// 判断一下如果是向里面划线了
 		if (value < 0) {
 			// ctx.strokeStyle = "rgb(0, 0, 0)";
@@ -119,28 +123,10 @@ const playMusic = () => {
 	analyser.fftSize = 2048;
 	const bufferLength = analyser.frequencyBinCount;
 	const dataArray = new Uint8Array(bufferLength);
-	const canvas = canvas1.value;
-	const ctx = canvas.getContext("2d");
-	const width = canvas.width;
-	const height = canvas.height;
-	const barWidth = (width / bufferLength) * 2.5;
-	let barHeight;
-	let x = 0;
 	function renderFrame() {
 		requestAnimationFrame(renderFrame);
-		x = 0;
 		analyser.getByteFrequencyData(dataArray);
-		ctx.fillStyle = "rgb(200, 200, 200)";
-		ctx.fillRect(0, 0, width, height);
-		for (let i = 0; i < bufferLength; i++) {
-			barHeight = dataArray[i];
-			const r = barHeight + 25 * (i / bufferLength);
-			const g = 250 * (i / bufferLength);
-			const b = 50;
-			ctx.fillStyle = `rgb(${r},${g},${b})`;
-			ctx.fillRect(x, height - barHeight, barWidth, barHeight);
-			x += barWidth + 1;
-		}
+		drawLine(canvas1, [...dataArray], 100);
 	}
 	audio.play();
 	renderFrame();
@@ -157,7 +143,7 @@ onMounted(() => {
 	initCanvas(canvas1);
 	initCanvas(canvas2);
 	const arr = new Array(60).fill(100);
-	arr.map((item, index) => {
+	arr.map((_item, index) => {
 		arr[index] = Math.random() * 100;
 	});
 	console.log(arr);
