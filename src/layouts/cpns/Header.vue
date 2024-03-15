@@ -1,7 +1,16 @@
 <template>
 	<div class="body">
 		<div class="header">
-			<div class="logo" @click="router.push('/')">Vue Study Demos</div>
+			<div
+				class="logo"
+				@click="
+					router.push({
+						name: '主页',
+					})
+				"
+			>
+				Vue Study Demos
+			</div>
 			<div class="nav">
 				<!-- <div class="nav-item" @click="router.push('/')">首页</div>
         <div class="nav-item" @click="router.push('/about')">关于</div>
@@ -22,7 +31,7 @@ import router from "../../router";
 const pathName = ref("");
 
 onMounted(() => {
-  pathName.value = router.currentRoute.value.name as string;
+	pathName.value = router.currentRoute.value.name as string;
 });
 
 onBeforeRouteUpdate((to, _from, next) => {
@@ -35,6 +44,7 @@ onBeforeRouteUpdate((to, _from, next) => {
 .body {
 	background-color: #f5f5f5;
 	.header {
+		width: 100%;
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -63,7 +73,7 @@ onBeforeRouteUpdate((to, _from, next) => {
 			}
 		}
 		.name {
-			margin-left: 20px;
+			margin-right: 50px;
 			font-size: 20px;
 			font-weight: 700;
 			color: #333;

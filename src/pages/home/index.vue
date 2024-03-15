@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 import { RouteRecordRaw } from "vue-router";
 import router, { routes } from "../../router/index.ts";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 const handlePath = (path: string) => {
 	router.push(path);
@@ -61,6 +61,10 @@ const handleSearch = () => {
 	});
 	searchResult.value = result;
 };
+
+onMounted(() => {
+	handleSearch();
+});
 </script>
 
 <style lang="scss" scoped>
