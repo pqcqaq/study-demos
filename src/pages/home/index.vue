@@ -2,7 +2,7 @@
 	<div>
 		<div class="list">
 			<div class="item" v-for="([path, name], index) in pathToName">
-				<div class="to" key="index" @click="router.push(path)">
+				<div class="to" :key="index" @click="router.push(path)">
 					<div>{{ name }}</div>
 				</div>
 			</div>

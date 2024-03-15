@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onBeforeMount, ref } from "vue";
+import { onMounted, onBeforeMount, ref, onUnmounted } from "vue";
 
 let message = ref("");
 const sendMessage = () => {
@@ -70,6 +70,16 @@ const initTestWebSocket = async () => {
 	};
 	websocket.onclose = function (event) {
 		console.log("连接关闭", event);
+		// 如果是被动关闭，弹出提示框
+		if (event.wasClean) {
+			console.log("连接已关闭");
+		} else {
+			console.log("连接异常关闭");
+			ElMessage({
+				type: "error",
+				message: "连接异常关闭",
+			});
+		}
 		//尝试重连websocket
 		connected.value = false;
 		reconnectMessageWebSocket();
@@ -105,14 +115,25 @@ const initTestWebSocket = async () => {
 	};
 };
 
+let retry = true;
+
 // 重连
 const reconnectMessageWebSocket = () => {
+	if (!retry) {
+		return;
+	}
 	console.log("正在重连");
 	// 进行重连
 	setTimeout(() => {
 		initTestWebSocket();
 	}, 1000);
 };
+
+// 在页面退出时，取消重试连接
+onUnmounted(() => {
+	websocket.close();
+	retry = false;
+});
 </script>
 
 <style lang="scss" scoped>
