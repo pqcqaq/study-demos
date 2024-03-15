@@ -26,7 +26,7 @@ import router, { routes } from "../../router/index.ts";
 import { onMounted, ref } from "vue";
 
 const handlePath = (path: string) => {
-	console.log("route to:", path);
+  ElMessage.info(`route to: ${path}`);
 	router.push(path);
 };
 

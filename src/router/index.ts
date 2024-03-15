@@ -49,6 +49,12 @@ export const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
+			{
+				path: "animation",
+				name: "动画展示",
+				component: () => import("../pages/animation/index.vue"),
+				meta: { requiresAuth: false, breadcrumb: "动画展示" },
+			},
 		],
 	},
 	// {
@@ -79,7 +85,7 @@ export const routes: Array<RouteRecordRaw> = [
 
 const routes2: any = [];
 
-const views: any = import.meta.glob("/src/pages/**/*.vue", { eager: true });
+const views: any = import.meta.glob("/src/pages/**/index.vue", { eager: true });
 
 Object.keys(views).forEach((path) => {
 	routes2.push({
