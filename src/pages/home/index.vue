@@ -1,8 +1,18 @@
 <template>
 	<div>
+		<div class="search">
+			<el-input
+				v-model="search"
+				placeholder="输入搜索条件"
+				@change="handleSearch"
+				@input="handleSearch"
+				@focus="handleSearch"
+				@blur="handleSearch"
+			></el-input>
+		</div>
 		<div class="list">
-			<div class="item" v-for="([path, name], index) in pathToName">
-				<div class="to" :key="index" @click="router.push(path)">
+			<div class="item" v-for="([path, name], index) in searchResult">
+				<div class="to" :key="index" @click="handlePath(path)">
 					<div>{{ name }}</div>
 				</div>
 			</div>
@@ -15,13 +25,17 @@ import { RouteRecordRaw } from "vue-router";
 import router, { routes } from "../../router/index.ts";
 import { ref } from "vue";
 
-const pathToName = ref(new Map<string, string>());
+const handlePath = (path: string) => {
+	router.push(path);
+};
+
+const pathToName = new Map<string, string>();
 
 const getPathAndName = (basePath: string, childrenRoute: RouteRecordRaw) => {
 	const { path, name, children } = childrenRoute;
 	const genPath = path.endsWith("/") ? `${basePath}` : `${basePath}/${path}`;
-	if (name) {
-		pathToName.value.set(genPath, name as string);
+	if (genPath && name) {
+		pathToName.set(genPath, name as string);
 	}
 	if (children) {
 		children.forEach((route) => {
@@ -34,6 +48,19 @@ const getPathAndName = (basePath: string, childrenRoute: RouteRecordRaw) => {
 routes.forEach((route) => {
 	getPathAndName("", route);
 });
+
+const search = ref("");
+const searchResult = ref<Map<string, string>>(new Map());
+
+const handleSearch = () => {
+	const result = new Map<string, string>();
+	pathToName.forEach((name, path) => {
+		if (name.includes(search.value)) {
+			result.set(path, name);
+		}
+	});
+	searchResult.value = result;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -61,5 +88,22 @@ routes.forEach((route) => {
 }
 .item:hover {
 	background-color: #f0f0f0;
+}
+.search {
+	position: fixed;
+	top: 100px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+// 给item添加显示和隐藏动画
+.item-enter-active,
+.item-leave-active {
+	transition: all 0.5s;
+}
+.item-enter,
+.item-leave-to {
+	opacity: 0;
+	transform: translateY(-100px);
 }
 </style>

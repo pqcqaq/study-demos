@@ -25,15 +25,30 @@ export const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "drag",
-				name: "拖拽Demo",
+				name: "拖拽课表",
 				component: () => import("../pages/draggable/index.vue"),
 				meta: { requiresAuth: false, breadcrumb: "拖拽Demo" },
 			},
 			{
 				path: "table",
-				name: "表格Demo",
+				name: "表格",
 				component: () => import("../pages/table/index.vue"),
 				meta: { requiresAuth: false, breadcrumb: "表格Demo" },
+			},
+			{
+				path: "/",
+        name: "布局Demo",
+        redirect: "layout-demo",
+				component: () => import("../pages/layout/index.vue"),
+				children: [
+					{
+						path: "layout-demo",
+						name: "布局测试",
+						component: () =>
+							import("../pages/layout/demo/index.vue"),
+						meta: { requiresAuth: false, breadcrumb: "布局1" },
+					},
+				],
 			},
 		],
 	},
@@ -79,7 +94,7 @@ Object.keys(views).forEach((path) => {
 	});
 });
 
-console.log(routes2);
+console.log("自动生成的路由：", routes2);
 
 // 创建路由实例
 const router = createRouter({
