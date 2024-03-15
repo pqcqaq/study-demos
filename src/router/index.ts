@@ -61,6 +61,26 @@ export const routes: Array<RouteRecordRaw> = [
 	// 添加其他路由配置...
 ];
 
+// TODO: 自动注入路由Demo
+
+const routes2: any = [];
+
+const views: any = import.meta.glob("/src/pages/**/*.vue", { eager: true });
+
+Object.keys(views).forEach((path) => {
+	routes2.push({
+		path: path.replace(/^\/src\/pages(\/\w+)?\/index\.\w+$/, "$1")
+			? path.replace(/^\/src\/views(\/\w+)?\/index\.\w+$/, "$1")
+			: "/",
+		name: path
+			.replace(/^\/src\/pages(\/\w+)?\/index\.\w+$/, "$1")
+			.replace("/", ""),
+		component: views[path].default,
+	});
+});
+
+console.log(routes2);
+
 // 创建路由实例
 const router = createRouter({
 	history: createWebHashHistory(),
