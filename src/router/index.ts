@@ -55,6 +55,12 @@ export const routes: Array<RouteRecordRaw> = [
 				component: () => import("../pages/animation/index.vue"),
 				meta: { requiresAuth: false, breadcrumb: "动画展示" },
 			},
+			{
+				path: "showaudio",
+				name: "音频可视化",
+				component: () => import("../pages/showaudio/index.vue"),
+				meta: { requiresAuth: false, breadcrumb: "音频可视化" },
+			}
 		],
 	},
 	// {
