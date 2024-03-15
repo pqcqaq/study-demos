@@ -5,8 +5,8 @@
 			<canvas
 				ref="canvas1"
 				class="cas"
-				width="600px"
-				height="600px"
+				width="800px"
+				height="400px"
 			></canvas>
 		</div>
 		<div>
