@@ -1,6 +1,6 @@
 import { RouteLocation, RouteRecordRaw, createRouter, createWebHashHistory } from "vue-router";
 
-const routes: Array<RouteRecordRaw> = [
+export const routes: Array<RouteRecordRaw> = [
     {
         path: "/",
         component: () => import("../layouts/index.vue"),
@@ -26,20 +26,20 @@ const routes: Array<RouteRecordRaw> = [
     //     component: () => import("../views/Login/index.vue"),
     //     meta: { requiresAuth: false },
     //   },
-      {
-        path: "/:pathMatch(.*)*",
-        redirect: (_to: RouteLocation) => {
-          const role = sessionStorage.getItem("role");
-          // Check if the requested path is in the excluded paths
-          if (role === "ADMIN") {
-            return "/orders";
-          } else if (role === "SERVER") {
-            return "/query";
-          } else {
-            return "/query"; // 默认情况下重定向到首页
-          }
-        },
-      },
+      // {
+      //   path: "/:pathMatch(.*)*",
+      //   redirect: (_to: RouteLocation) => {
+      //     const role = sessionStorage.getItem("role");
+      //     // Check if the requested path is in the excluded paths
+      //     if (role === "ADMIN") {
+      //       return "/orders";
+      //     } else if (role === "SERVER") {
+      //       return "/query";
+      //     } else {
+      //       return "/query"; // 默认情况下重定向到首页
+      //     }
+      //   },
+      // },
       // 添加其他路由配置...
 ]
 

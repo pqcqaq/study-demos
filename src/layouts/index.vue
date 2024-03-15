@@ -1,16 +1,11 @@
 <template>
-  <div><router-view></router-view></div>
+	<div>
+		<Header/>
+		<router-view/>
+	</div>
 </template>
-<script lang='ts'>
-import { defineComponent } from 'vue'
-    
-export default defineComponent({
-  setup() {
-    // todo
-    return {}
-  }
-})
+<script lang="ts" setup>
+import Header from "./cpns/Header.vue";
 </script>
-    
-<style lang='stylus' scoped></style>
-    
+
+<style lang="stylus" scoped></style>
