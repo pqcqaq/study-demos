@@ -36,13 +36,12 @@ export const routes: Array<RouteRecordRaw> = [
 				meta: { requiresAuth: false, breadcrumb: "表格Demo" },
 			},
 			{
-				path: "/",
-        name: "布局Demo",
-        redirect: "layout-demo",
+				path: "layout",
+				redirect: "demo",
 				component: () => import("../pages/layout/index.vue"),
 				children: [
 					{
-						path: "layout-demo",
+						path: "demo",
 						name: "布局测试",
 						component: () =>
 							import("../pages/layout/demo/index.vue"),

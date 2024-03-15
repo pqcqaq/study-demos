@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 </script>
 
 <style lang="scss">
@@ -12,7 +11,8 @@ import { ref } from "vue";
 	height: 60px;
 	background-color: #c8b3d0;
 	position: fixed;
-	top: 0;
+	// 避开原有的导航栏
+	top: 60px;
 	left: 0;
 	z-index: 100;
 }

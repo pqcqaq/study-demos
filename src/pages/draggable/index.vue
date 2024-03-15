@@ -70,16 +70,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-
 //直接监控父元素，使用事件委托
 
-type Source = "copy" | "move";
-
-let source: Source;
+let source: any;
 
 //拖拽开始事件，只触发一次
-const containerOndragstart = (e: DragEvent) => {
+const containerOndragstart = (e: any) => {
 	console.log("start", e.target);
 
 	//移动取消出现+号的效果
@@ -89,13 +85,13 @@ const containerOndragstart = (e: DragEvent) => {
 };
 
 //拖拽结束事件,表示拖拽这个元素到哪个元素之上，不断触发
-const containerOndragover = (e: DragEvent) => {
+const containerOndragover = (e: any) => {
 	e.preventDefault();
 	// console.log('over', e.target)
 };
 
 //拖拽移入事件，只触发一次
-const containerOndragenter = (e: DragEvent) => {
+const containerOndragenter = (e: any) => {
 	//清除之前拖拽的样式
 	removeDropStyle();
 	const dropNode = getDropNode(e.target);
@@ -108,7 +104,7 @@ const containerOndragenter = (e: DragEvent) => {
 };
 
 //拖拽放手在哪个元素,table,tr,td,这些元素是不允许元素拖拽到他的上面的，因此是不会触发这个事件的，触发阻止浏览器默认事件，在ondragover中阻止
-const containerOndrop = (e: DragEvent) => {
+const containerOndrop = (e: any) => {
 	//清除拖拽的样式
 	removeDropStyle();
 	console.log("drop", e.target);
@@ -134,10 +130,9 @@ const containerOndrop = (e: DragEvent) => {
 //获取该元素是否有父元素
 function getDropNode(node: any) {
 	console.log("node", node);
-	let nodeDataset: DOMStringMap = node.dataset;
 
 	while (node) {
-		if (nodeDataset.drop) {
+		if (node.dataset.drop) {
 			return node;
 		}
 		node = node.parentNode;

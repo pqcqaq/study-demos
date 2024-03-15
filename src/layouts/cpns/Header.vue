@@ -44,12 +44,13 @@ onBeforeRouteUpdate((to, _from, next) => {
 .body {
 	background-color: #f5f5f5;
 	.header {
+		z-index: 1000;
 		width: 100%;
 		position: fixed;
 		top: 0;
 		left: 0;
 		background-color: #fff;
-		box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
+		box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 		padding: 0 20px;
 		height: 60px;
 		display: flex;

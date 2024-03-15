@@ -26,6 +26,7 @@ import router, { routes } from "../../router/index.ts";
 import { onMounted, ref } from "vue";
 
 const handlePath = (path: string) => {
+	console.log("route to:", path);
 	router.push(path);
 };
 
@@ -33,7 +34,7 @@ const pathToName = new Map<string, string>();
 
 const getPathAndName = (basePath: string, childrenRoute: RouteRecordRaw) => {
 	const { path, name, children } = childrenRoute;
-	const genPath = path.endsWith("/") ? `${basePath}` : `${basePath}/${path}`;
+  const genPath = path.endsWith("/") ? `${basePath}` : `${basePath}/${path}`;
 	if (genPath && name) {
 		pathToName.set(genPath, name as string);
 	}

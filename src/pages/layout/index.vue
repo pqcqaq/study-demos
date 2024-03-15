@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import Header from "./cpns/Header.vue";
 import Footer from "./cpns/Footer.vue";
 import Aside from "./cpns/Aside.vue";
