@@ -41,7 +41,14 @@ const defaultConfig: SlideInConfig = {
 
 const SlideIn: ObjectDirective<HTMLElement, SlideInConfig> = {
 	mounted(element: HTMLElement, binding: DirectiveBinding<SlideInConfig>) {
-		binding.value = { ...defaultConfig, ...binding.value };
+		const direFromArg = (binding.arg as SlideDirection) || undefined;
+		binding.value = {
+			...defaultConfig,
+			...binding.value,
+		};
+		if (direFromArg) {
+			binding.value.direction = direFromArg;
+		}
 		const isbellowViewPort = (element: HTMLElement, dire: number) => {
 			const rect = element.getBoundingClientRect();
 			return rect.top - dire > window.innerHeight;

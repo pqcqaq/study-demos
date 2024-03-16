@@ -24,120 +24,25 @@
 		<div v-slide-in class="box"></div>
 		<div v-slide-in class="box"></div>
 		<div v-slide-in class="box"></div>
-		<div
-			v-slide-in="{
-				direction: 'left',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'left',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'left',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'left',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'left',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'right',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'right',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'right',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'right',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'right',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'right',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'right',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'right',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'up',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'up',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'up',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'up',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'up',
-			}"
-			class="box"
-		></div>
-		<div
-			v-slide-in="{
-				direction: 'up',
-			}"
-			class="box"
-		></div>
+		<div v-slide-in:left></div>
+		<div v-slide-in:left class="box"></div>
+		<div v-slide-in:left class="box"></div>
+		<div v-slide-in:left class="box"></div>
+		<div v-slide-in:left class="box"></div>
+		<div v-slide-in:right class="box"></div>
+		<div v-slide-in:right class="box"></div>
+		<div v-slide-in:right class="box"></div>
+		<div v-slide-in:right class="box"></div>
+		<div v-slide-in:right class="box"></div>
+		<div v-slide-in:right class="box"></div>
+		<div v-slide-in:right class="box"></div>
+		<div v-slide-in:right class="box"></div>
+		<div v-slide-in:up class="box"></div>
+		<div v-slide-in:up class="box"></div>
+		<div v-slide-in:up class="box"></div>
+		<div v-slide-in:up class="box"></div>
+		<div v-slide-in:up class="box"></div>
+		<div v-slide-in:up class="box"></div>
 	</div>
 </template>
 
