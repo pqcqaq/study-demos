@@ -74,9 +74,10 @@ const drawCircle = (
 	const count = arr.length;
 	const centerX = width / 2;
 	const centerY = height / 2;
+	// 这边内外圈参数和基础高度要 根据实际情况调整
 	const inRadius = 80;
 	const outRadius = 135;
-	const base = maxValue * 0.3;
+	const base = ((maxValue * inRadius) / outRadius) * 0.8;
 	const step = (2 * Math.PI) / count;
 	// 根据数量来计算单个元素和线条的粗细
 	const size = (2 * Math.PI * inRadius) / count / 3;
@@ -88,9 +89,9 @@ const drawCircle = (
 		// const g = 150 * (i / maxValue);
 		// const b = 50;
 		// 根据i来显示出彩虹色
-		const r = Math.floor(Math.sin((i / maxValue) + 2) * 127 + 128);
-		const g = Math.floor(Math.sin((i / maxValue) + 4) * 127 + 128);
-		const b = Math.floor(Math.sin((i / maxValue) + 6) * 127 + 128);
+		const r = Math.floor(Math.sin(i / maxValue + 2) * 127 + 128);
+		const g = Math.floor(Math.sin(i / maxValue + 4) * 127 + 128);
+		const b = Math.floor(Math.sin(i / maxValue + 6) * 127 + 128);
 		const color = `rgb(${r},${g},${b}`;
 		ctx.fillStyle = color;
 		// ctx.fill(x, y, size, size);
