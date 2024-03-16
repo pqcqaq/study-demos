@@ -60,7 +60,13 @@ export const routes: Array<RouteRecordRaw> = [
 				name: "音频可视化",
 				component: () => import("../pages/showaudio/index.vue"),
 				meta: { requiresAuth: false, breadcrumb: "音频可视化" },
-			}
+			},
+			{
+				path: "dynamic-form",
+				name: "动态表单",
+				component: () => import("../pages/dynamic-form/index.vue"),
+				meta: { requiresAuth: false, breadcrumb: "动态表单" },
+			},
 		],
 	},
 	// {

@@ -1,7 +1,7 @@
 <template>
 	<div class="body">
-		<el-button @click="playMusic">开始播放</el-button>
-		<div>
+		<el-button @click="playMusic" type="primary">开始播放</el-button>
+		<div class="ctx">
 			<canvas
 				ref="canvas1"
 				class="cas"
@@ -58,7 +58,14 @@ const drawLine = (canvas: Ref<any>, arr: Array<number>, maxValue: number) => {
 	}
 };
 
-const drawCircle = (canvas: Ref<any>, arr: Array<number>, maxValue: number) => {
+const drawCircle = (
+	canvas: Ref<any>,
+	arrRow: Array<number>,
+	maxValue: number
+) => {
+	// 取前80%的数据，因为频谱图的后半部分多半是0
+	const arr = arrRow.slice(0, arrRow.length * 0.8);
+
 	const ctx = canvas.value.getContext("2d");
 	const width = canvas.value.width;
 	const height = canvas.value.height;
@@ -77,9 +84,14 @@ const drawCircle = (canvas: Ref<any>, arr: Array<number>, maxValue: number) => {
 		let value = ((arr[i] + base) / maxValue) * height;
 		let x = centerX + inRadius * Math.cos(step * i);
 		let y = centerY + inRadius * Math.sin(step * i);
-		const color = `rgb( ${value * Math.random() * 0.3}, ${
-			value * Math.random() * 0.3
-		},  ${value * Math.random() * 0.3})`;
+		// const r = value + 25 * (i / maxValue);
+		// const g = 150 * (i / maxValue);
+		// const b = 50;
+		// 根据i来显示出彩虹色
+		const r = Math.floor(Math.sin((i / maxValue) + 2) * 127 + 128);
+		const g = Math.floor(Math.sin((i / maxValue) + 4) * 127 + 128);
+		const b = Math.floor(Math.sin((i / maxValue) + 6) * 127 + 128);
+		const color = `rgb(${r},${g},${b}`;
 		ctx.fillStyle = color;
 		// ctx.fill(x, y, size, size);
 		// 替换成圆形
@@ -99,12 +111,6 @@ const drawCircle = (canvas: Ref<any>, arr: Array<number>, maxValue: number) => {
 		ctx.lineWidth = size * 2;
 		ctx.moveTo(x, y); // 将起始点移动到当前点
 		ctx.lineTo(endX, endY); // 绘制直线连接起始点和结束点
-		// 判断一下如果是向里面划线了
-		if (value < 0) {
-			// ctx.strokeStyle = "rgb(0, 0, 0)";
-			console.log("向里面划线了");
-		}
-
 		ctx.strokeStyle = color;
 		ctx.stroke(); // 绘制线条
 	}
@@ -126,7 +132,7 @@ const playMusic = () => {
 	function renderFrame() {
 		requestAnimationFrame(renderFrame);
 		analyser.getByteFrequencyData(dataArray);
-		drawLine(canvas1, [...dataArray], 100);
+		drawLine(canvas1, [...dataArray], 127);
 	}
 	audio.play();
 	renderFrame();
@@ -134,7 +140,7 @@ const playMusic = () => {
 	function renderCircle() {
 		requestAnimationFrame(renderCircle);
 		analyser.getByteFrequencyData(dataArray);
-		drawCircle(canvas2, [...dataArray], 100);
+		drawCircle(canvas2, [...dataArray], 255);
 	}
 	renderCircle();
 };
@@ -146,8 +152,6 @@ onMounted(() => {
 	arr.map((_item, index) => {
 		arr[index] = Math.random() * 100;
 	});
-	console.log(arr);
-
 	drawLine(canvas1, arr, 100);
 	drawCircle(canvas2, arr, 100);
 });
@@ -155,11 +159,15 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .body {
-	margin-top: 100px;
+	margin-top: 50px;
 }
 .cas {
 	// width: 500px;
 	// height: 500px;
 	background-color: #c8b3d0;
+}
+.ctx {
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 </style>
