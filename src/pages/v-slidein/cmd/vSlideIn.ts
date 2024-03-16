@@ -6,6 +6,7 @@ export type SlideInConfig = {
 	direction: SlideDirection;
 	beforeDire: number;
 	duration: number;
+	showAnyway: boolean;
 };
 
 const ob = new IntersectionObserver((entries) => {
@@ -23,6 +24,7 @@ const defaultConfig: SlideInConfig = {
 	direction: "down",
 	beforeDire: 150,
 	duration: 500,
+	showAnyway: false,
 };
 
 const cmd: ObjectDirective<HTMLElement, SlideInConfig> = {
@@ -33,7 +35,7 @@ const cmd: ObjectDirective<HTMLElement, SlideInConfig> = {
 			return rect.top - dire > window.innerHeight;
 		};
 
-		if (!isbellowViewPort(element, binding.value.beforeDire)) {
+		if (!binding.value.showAnyway && !isbellowViewPort(element, binding.value.beforeDire)) {
 			return;
 		}
 
@@ -74,6 +76,7 @@ const cmd: ObjectDirective<HTMLElement, SlideInConfig> = {
 	},
 	unmounted(element: HTMLElement) {
 		ob.unobserve(element);
+		animationMap.delete(element);
 	},
 };
 export default cmd;
