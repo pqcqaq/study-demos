@@ -1,4 +1,4 @@
-import { DirectiveBinding } from "vue";
+import { DirectiveBinding, ObjectDirective } from "vue";
 
 export type SlideDirection = "left" | "right" | "up" | "down";
 
@@ -25,7 +25,7 @@ const defaultConfig: SlideInConfig = {
 	duration: 500,
 };
 
-export default {
+const cmd: ObjectDirective<HTMLElement, SlideInConfig> = {
 	mounted(element: HTMLElement, binding: DirectiveBinding<SlideInConfig>) {
 		binding.value = { ...defaultConfig, ...binding.value };
 		const isbellowViewPort = (element: HTMLElement, dire: number) => {
@@ -76,3 +76,4 @@ export default {
 		ob.unobserve(element);
 	},
 };
+export default cmd;
