@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "ant-design-vue": "4.x",
     "element-plus": "^2.5.6",
     "pinia": "^2.1.7",
     "vue": "^3.4.19",
