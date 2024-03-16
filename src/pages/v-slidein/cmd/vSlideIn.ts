@@ -3,9 +3,21 @@ import { DirectiveBinding, ObjectDirective } from "vue";
 export type SlideDirection = "left" | "right" | "up" | "down";
 
 export type SlideInConfig = {
+	/**
+	 * 滑动方向
+	 */
 	direction: SlideDirection;
+	/**
+	 * 滑动前的距离
+	 */
 	beforeDire: number;
+	/**
+	 * 滑动持续时间
+	 */
 	duration: number;
+	/**
+	 * 是否无论如何都展示 (默认如果元素已经在视口内则不展示动画)
+	 */
 	showAnyway: boolean;
 };
 
@@ -27,7 +39,7 @@ const defaultConfig: SlideInConfig = {
 	showAnyway: false,
 };
 
-const cmd: ObjectDirective<HTMLElement, SlideInConfig> = {
+const SlideIn: ObjectDirective<HTMLElement, SlideInConfig> = {
 	mounted(element: HTMLElement, binding: DirectiveBinding<SlideInConfig>) {
 		binding.value = { ...defaultConfig, ...binding.value };
 		const isbellowViewPort = (element: HTMLElement, dire: number) => {
@@ -35,7 +47,10 @@ const cmd: ObjectDirective<HTMLElement, SlideInConfig> = {
 			return rect.top - dire > window.innerHeight;
 		};
 
-		if (!binding.value.showAnyway && !isbellowViewPort(element, binding.value.beforeDire)) {
+		if (
+			!binding.value.showAnyway &&
+			!isbellowViewPort(element, binding.value.beforeDire)
+		) {
 			return;
 		}
 
@@ -79,4 +94,5 @@ const cmd: ObjectDirective<HTMLElement, SlideInConfig> = {
 		animationMap.delete(element);
 	},
 };
-export default cmd;
+
+export default SlideIn;
