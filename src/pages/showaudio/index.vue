@@ -21,7 +21,6 @@
 </template>
 
 <script setup lang="ts">
-import { Canvas } from "canvas";
 import { Ref, onMounted, ref } from "vue";
 
 const canvas1 = ref();
