@@ -67,6 +67,12 @@ export const routes: Array<RouteRecordRaw> = [
 				component: () => import("../pages/dynamic-form/index.vue"),
 				meta: { requiresAuth: false, breadcrumb: "动态表单" },
 			},
+			{
+				path: "v-slidein",
+				name: "自定义滑入指令",
+				component: () => import("../pages/v-slidein/index.vue"),
+				meta: { requiresAuth: false, breadcrumb: "自定义滑入指令" },
+			},
 		],
 	},
 	// {

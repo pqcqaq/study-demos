@@ -1,0 +1,144 @@
+<template>
+	<div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div v-slide-in class="box"></div>
+		<div
+			v-slide-in="{
+				direction: 'left',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'left',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'left',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'left',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'left',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'right',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'right',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'right',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'right',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'right',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'right',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'right',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'right',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'up',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'up',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'up',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'up',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'up',
+			}"
+			class="box"
+		></div>
+		<div
+			v-slide-in="{
+				direction: 'up',
+			}"
+			class="box"
+		></div>
+	</div>
+</template>
+
+<script setup lang="ts"></script>
+
+<style lang="scss" scoped>
+.box {
+	width: 500px;
+	height: 100px;
+	background-color: rgb(196, 200, 255);
+	transition: width 2s;
+	margin-top: 60px;
+	margin-bottom: 10px;
+}
+</style>
