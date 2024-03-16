@@ -73,6 +73,12 @@ export const routes: Array<RouteRecordRaw> = [
 				component: () => import("../pages/v-slidein/index.vue"),
 				meta: { requiresAuth: false, breadcrumb: "自定义滑入指令" },
 			},
+			{
+				path: "buttons",
+				name: "不同组件库的按钮",
+				component: () => import("../pages/buttons/index.vue"),
+				meta: { requiresAuth: false, breadcrumb: "不同组件库的按钮" },
+			},
 		],
 	},
 	// {
