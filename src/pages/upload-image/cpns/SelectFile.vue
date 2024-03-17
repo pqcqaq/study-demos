@@ -33,8 +33,10 @@
 							{{ file.type }}
 						</div>
 						<div class="right">
-							<el-button type="danger" size="mini"
-							@click="handleDelete(index)"
+							<el-button
+								type="danger"
+								size="mini"
+								@click="handleDelete(index)"
 								>删除</el-button
 							>
 						</div>
@@ -57,8 +59,27 @@
 import { ref } from "vue";
 import Button from "ant-design-vue/es/button";
 
-const msgOut = ref("点击这里/拖拽文件到此处");
-const msgIn = ref("松开鼠标-上传图片");
+const props = defineProps({
+	msgOut: {
+		type: String,
+		default: "点击这里/拖拽文件到此处",
+	},
+	msgIn: {
+		type: String,
+		default: "松开鼠标-上传图片",
+	},
+	onSubmit: {
+		type: Function,
+		default: () => {},
+	},
+	onCancel: {
+		type: Function,
+		default: () => {},
+	},
+});
+
+const msgOut = ref(props.msgOut);
+const msgIn = ref(props.msgIn);
 
 const msg = ref(msgOut.value);
 
@@ -94,12 +115,11 @@ const handleFileSelect = (e: Event) => {
 };
 
 const handleUpload = () => {
-	console.log("上传");
-	console.log(filesList.value);
+	props.onSubmit(filesList.value);
 };
 
 const handleConcle = () => {
-	console.log("取消");
+	props.onCancel();
 };
 
 const getImgPreview = (file: File) => {
