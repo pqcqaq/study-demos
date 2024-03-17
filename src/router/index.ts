@@ -79,6 +79,12 @@ export const routes: Array<RouteRecordRaw> = [
 				component: () => import("../pages/buttons/index.vue"),
 				meta: { requiresAuth: false, breadcrumb: "不同组件库的按钮" },
 			},
+			{
+				path: "upload-image",
+				name: "选择图片展示并上传",
+				component: () => import("../pages/upload-image/index.vue"),
+				meta: { requiresAuth: false, breadcrumb: "选择图片展示并上传" },
+			},
 		],
 	},
 	// {
