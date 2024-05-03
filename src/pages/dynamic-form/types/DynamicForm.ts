@@ -1,18 +1,48 @@
-export type InputType = "text" | "number" | "password" | "email" | "tel" | "input";
-export type InputSize = "small" | "default" | "large";
+import {
+	Input,
+	Textarea,
+	InputNumber,
+	Select,
+	RadioGroup,
+	CheckboxGroup,
+	DatePicker,
+} from "ant-design-vue";
 
-export type Field = {
-	type: InputType;
-	size: InputSize;
-	name: string;
-	label: string;
-	required: boolean;
-	placeholder: string;
-	errorMessage: string;
-	next: () => DynamicFormProps;
+// 表单域组件类型
+export const componentsMap = {
+	Text: Input,
+	Textarea,
+	Number: InputNumber,
+	Select,
+	Radio: RadioGroup,
+	Checkbox: CheckboxGroup,
+	DatePicker,
 };
 
-export type DynamicFormProps = {
-    fields: Field[];
-    submit: () => void;
+export type FItemAction = "add" | "remove" | "update" | "blur";
+
+export type DyForm = {
+	label: string;
+	field: string;
+	component: keyof typeof componentsMap;
+	componentProps?:  {
+		style?: Partial<CSSStyleDeclaration>;
+		allowClear?: boolean;
+		showCount?: boolean;
+		maxlength?: number;
+		autoSize?: boolean | { minRows: number; maxRows: number };
+		options?: { label: string; value: string | number }[];
+	};
+	formItemProps?: {
+		label?: string;
+		rules?: {
+			required?: boolean;
+			message: string;
+			validator?: (rule: any, value: any) => Promise<void>;
+			trigger?: FItemAction | FItemAction[];
+		}[];
+		style?: Partial<CSSStyleDeclaration>;
+	};
+	value?: string | number;
+	next?: (modelValue:any) => DyForm[];
 };

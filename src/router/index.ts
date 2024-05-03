@@ -85,6 +85,12 @@ export const routes: Array<RouteRecordRaw> = [
 				component: () => import("../pages/upload-image/index.vue"),
 				meta: { requiresAuth: false, breadcrumb: "选择图片展示并上传" },
 			},
+			{
+				path: "gemini-chat",
+				name: "Gemini-chat测试",
+				component: () => import("../pages/gemini-chat/index.vue"),
+				meta: { requiresAuth: false, breadcrumb: "Gemini-chat测试" },
+			},
 		],
 	},
 	// {
