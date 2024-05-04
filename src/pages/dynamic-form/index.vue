@@ -110,6 +110,102 @@ const schema = ref<DyForm>({
 				hidden: false,
 			},
 			value: 1,
+			next: (model) => {
+				if (model == 1) {
+					return {
+						items: [
+							{
+								label: "男生邮箱",
+								field: "email",
+								component: "Text",
+								componentProps: {
+									allowClear: true,
+									showCount: true,
+									maxlength: 80,
+									style: {
+										width: "350px",
+									},
+								},
+								formItemProps: {
+									rules: [
+										{
+											required: true,
+											message: "格式不正确",
+											trigger: "blur",
+											type: "email",
+										},
+									],
+									style: {
+										marginTop: "10px",
+									},
+								},
+							},
+						],
+					};
+				} else if (model == 2) {
+					return {
+						items: [
+							{
+								label: "女生邮箱",
+								field: "email",
+								component: "Text",
+								componentProps: {
+									allowClear: true,
+									showCount: true,
+									maxlength: 80,
+									style: {
+										width: "350px",
+									},
+								},
+								formItemProps: {
+									rules: [
+										{
+											required: true,
+											message: "格式不正确",
+											trigger: "blur",
+											type: "email",
+										},
+									],
+									style: {
+										marginTop: "10px",
+									},
+								},
+							},
+						],
+					};
+				} else if (model == 3) {
+					return {
+						items: [
+							{
+								label: "保密邮箱",
+								field: "email",
+								component: "Text",
+								componentProps: {
+									allowClear: true,
+									showCount: true,
+									maxlength: 80,
+									style: {
+										width: "350px",
+									},
+								},
+								formItemProps: {
+									rules: [
+										{
+											required: true,
+											message: "格式不正确",
+											trigger: "blur",
+											type: "email",
+										},
+									],
+									style: {
+										marginTop: "10px",
+									},
+								},
+							},
+						],
+					};
+				}
+			},
 		},
 		// datepicker
 		{
