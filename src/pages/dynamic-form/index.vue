@@ -14,8 +14,9 @@
 
 <script lang="ts" setup>
 import DynamicForm from "./cpns/DynamicForm.vue";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { DyForm } from "./types/DynamicForm";
+
 const formRef = ref<InstanceType<typeof DynamicForm> | null>(null);
 
 const schema = ref<DyForm>({
@@ -55,33 +56,34 @@ const schema = ref<DyForm>({
 				if (model == "百里守约") {
 					return {
 						items: [
-						{
-							label: "武器",
-							field: "weapon",
-							component: "Text",
-							componentProps: {
-								allowClear: true,
-								showCount: true,
-								maxlength: 80,
-								style: {
-									width: "350px",
-								},
-							},
-							formItemProps: {
-								rules: [
-									{
-										required: true,
-										message: "格式不正确",
-										trigger: "blur",
-										type: "email",
+							{
+								label: "武器",
+								field: "weapon",
+								component: "Text",
+								componentProps: {
+									allowClear: true,
+									showCount: true,
+									maxlength: 80,
+									style: {
+										width: "350px",
 									},
-								],
-								style: {
-									marginTop: "10px",
+								},
+								formItemProps: {
+									rules: [
+										{
+											required: true,
+											message: "格式不正确",
+											trigger: "blur",
+											type: "email",
+										},
+									],
+									style: {
+										marginTop: "10px",
+									},
 								},
 							},
-						},
-					]}
+						],
+					};
 				}
 			},
 		},
@@ -250,7 +252,7 @@ const schema = ref<DyForm>({
 						trigger: "blur",
 					},
 				],
-			}
+			},
 		},
 		// treedata
 		{
@@ -288,20 +290,12 @@ const schema = ref<DyForm>({
 		console.log("model", model);
 	},
 });
-const model = ref({ name: "百里守约" });
+
+const model = ref<Record<string, any>>({
+	name: "百里守约",
+});
 
 const changeModel = () => {
 	model.value = { name: "安琪拉" };
 };
-
-watch(
-	() => model.value,
-	(newVal) => {
-		console.log("model", newVal);
-	},
-	{
-		deep: true,
-		immediate: true,
-	}
-);
 </script>

@@ -16,7 +16,7 @@ import {
 
 import type { Rule } from "ant-design-vue/es/form/interface";
 import type { TimePickerProps, TreeSelectProps } from "ant-design-vue";
-import { VNode } from "vue";
+import { VNode, ref } from "vue";
 
 // 表单域组件类型
 export const componentsMap = {
@@ -161,3 +161,24 @@ export type DyForm = {
 		wrapperCol?: { span: number; offset?: number };
 	};
 };
+
+// 计算ref的值的类型
+export type FormModelMapping<T extends DyFormItem[]> = {
+	[K in T[number]["field"]]: string;
+};
+
+export type FormModelType<T extends DyFormItem[]> = FormModelMapping<T> & {
+	next?: Record<string, any> | null;
+};
+
+export function defineFormModel<T extends DyForm>(
+	items: T["items"],
+	init: Record<string, any> = {}
+) {
+	const model = {} as Record<string, any>;
+	for (const item of items) {
+		model[item.field] = "";
+	}
+	Object.assign(model, init);
+	return ref(model);
+}

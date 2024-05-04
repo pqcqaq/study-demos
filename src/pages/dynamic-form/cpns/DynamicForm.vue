@@ -67,6 +67,7 @@ import { ref, watch, onMounted, defineAsyncComponent, computed } from "vue";
 import type { DyForm, DyFormItem } from "../types/DynamicForm";
 import { componentsMap } from "../types/DynamicForm";
 import { FormInstance } from "ant-design-vue/es/form/Form";
+import { isEqual } from "lodash";
 
 type BtnsShow = {
 	clearAll: 0 | 1;
@@ -202,7 +203,7 @@ const emit = defineEmits(["update:modelValue"]);
 watch(
 	() => formModel.value,
 	(newVal) => {
-		if (JSON.stringify(props.modelValue) !== JSON.stringify(newVal)) {
+		if (isEqual(newVal, props.modelValue)) {
 			emit("update:modelValue", newVal);
 		}
 	},
@@ -215,7 +216,7 @@ watch(
 watch(
 	() => nextModel.value,
 	(newVal) => {
-		if (JSON.stringify(nextModel.value) !== JSON.stringify(newVal)) {
+		if (isEqual(newVal, formModel.value["next"])) {
 			formModel.value["next"] = newVal;
 		}
 	},
