@@ -109,10 +109,11 @@ export type DyFormItem = {
 		minuteStep?: number;
 		placeholder?: string;
 		valueFormat?: string;
-		fetchList?: () => Promise<string[]> | string[];
+		fetchList?: () => Promise<{ value: string }[]> | { value: string }[];
 		debounce?: number;
 		enableSplit?: boolean;
 		splitWord?: string;
+		title?: string;
 	};
 	formItemProps?: {
 		label?: string;

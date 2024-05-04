@@ -291,14 +291,39 @@ const schema = ref<DyForm>({
 			field: "autoComplete",
 			component: "AutoComplete",
 			componentProps: {
-				fetchList: async () => {
-					return ["百里守约", "安琪拉", "李白", "韩信"];
+				fetchList: () => {
+					return [
+						{
+							value: "百里守约",
+						},
+						{
+							value: "安琪拉",
+						},
+						{
+							value: "李白",
+						},
+						{
+							value: "韩信",
+						},
+					];
 				},
 				enableSplit: true,
 				splitWord: ",",
+				title: "颜色",
 				style: {
 					width: "400px",
 				},
+				multiple: true,
+				allowClear: true,
+			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请选择",
+						trigger: "blur",
+					},
+				],
 			},
 		},
 	],
