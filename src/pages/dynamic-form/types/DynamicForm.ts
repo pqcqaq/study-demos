@@ -177,7 +177,9 @@ export type DyFormItem = {
 		| File
 		| File[]
 		| null;
-	next?: (modelValue: Record<string, any>) => DyForm | undefined | null;
+	next?: (
+		modelValue: Record<string, any> | string
+	) => DyForm | undefined | null;
 };
 
 export type DyForm = {

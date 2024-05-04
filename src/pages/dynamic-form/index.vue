@@ -171,6 +171,15 @@ const schema = ref<DyForm>({
 				maxlength: 200,
 				showCount: true,
 			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请输入简介",
+						trigger: "blur",
+					},
+				],
+			},
 		},
 		// switch
 		{
@@ -204,6 +213,79 @@ const schema = ref<DyForm>({
 									format: "HH:mm:ss",
 									valueFormat: "HH:mm:ss",
 									tooltips: ["选择时间"],
+								},
+								next: (model) => {
+									if (model > "06:00:00") {
+										return {
+											items: [
+												{
+													label: "关闭时间",
+													field: "closeTime",
+													component: "TimePicker",
+													formItemProps: {
+														rules: [
+															{
+																required: true,
+																message:
+																	"请选择关闭时间",
+																trigger: "blur",
+															},
+														],
+													},
+													componentProps: {
+														format: "HH:mm:ss",
+														valueFormat: "HH:mm:ss",
+														tooltips: ["选择时间"],
+													},
+													next: (model) => {
+														if (
+															model > "18:00:00"
+														) {
+															return {
+																items: [
+																	{
+																		label: "关闭原因",
+																		field: "closeReason",
+																		component:
+																			"Text",
+																		componentProps:
+																			{
+																				allowClear:
+																					true,
+																				showCount:
+																					true,
+																				maxlength: 80,
+																				style: {
+																					width: "350px",
+																				},
+																			},
+																		formItemProps:
+																			{
+																				rules: [
+																					{
+																						required:
+																							true,
+																						message:
+																							"请输入关闭原因",
+																						trigger:
+																							"blur",
+																						type: "string",
+																					},
+																				],
+																				style: {
+																					marginTop:
+																						"10px",
+																				},
+																			},
+																	},
+																],
+															};
+														}
+													},
+												},
+											],
+										};
+									}
 								},
 							},
 						],

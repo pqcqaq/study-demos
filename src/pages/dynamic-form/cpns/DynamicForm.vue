@@ -30,11 +30,15 @@
 					v-model:checked="formModel[item.field]"
 				/>
 				<div class="subForms">
-					<DynamicForm
-						v-if="showNext(formModel[item.field], item)"
-						:schema="nextFormSchema(formModel[item.field], item)"
-						v-model="nextModel"
-					/>
+					<keep-alive>
+						<DynamicForm
+							v-if="showNext(formModel[item.field], item)"
+							:schema="
+								nextFormSchema(formModel[item.field], item)
+							"
+							v-model="nextModel"
+						/>
+					</keep-alive>
 				</div>
 			</a-form-item>
 			<div
@@ -225,3 +229,13 @@ defineExpose({
 	resetFields,
 });
 </script>
+<style lang=scss scoped>
+.title {
+	font-size: 20px;
+	font-weight: bold;
+}
+.subForms {
+	margin-left: 0;
+	width: 100%;
+}
+</style>
