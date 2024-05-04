@@ -9,6 +9,7 @@
 	</div>
 	<div class="change">
 		<a-button @click="changeModel">change</a-button>
+		<a-button @click="changeSchema">changeSchema</a-button>
 	</div>
 </template>
 
@@ -580,6 +581,70 @@ const changeModel = () => {
 	};
 };
 
+const changeSchema = () => {
+	schema.value.items = [
+		{
+			label: "姓名",
+			field: "name",
+			component: "Text",
+			componentProps: {
+				allowClear: true,
+				showCount: true,
+				maxlength: 20,
+				style: {
+					width: "400px",
+				},
+			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请输入姓名",
+						trigger: "blur",
+					},
+				],
+				colon: false,
+				tooltip: "在这里输入姓名",
+			},
+			value: "百里守约",
+			next: (model: any) => {
+				if (model == "百里守约") {
+					return {
+						items: [
+							{
+								label: "武器",
+								field: "weapon",
+								component: "Text",
+								componentProps: {
+									allowClear: true,
+									showCount: true,
+									maxlength: 80,
+									style: {
+										width: "350px",
+									},
+								},
+								formItemProps: {
+									rules: [
+										{
+											required: true,
+											message: "格式不正确",
+											trigger: "blur",
+											type: "email",
+										},
+									],
+									style: {
+										marginTop: "10px",
+									},
+								},
+							},
+						],
+					};
+				}
+			},
+		},
+	];
+};
+
 watch(
 	() => model.value,
 	(newVal) => {
@@ -591,3 +656,12 @@ watch(
 	}
 );
 </script>
+
+<style lang="scss" scoped>
+.change {
+	margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+}
+</style>
