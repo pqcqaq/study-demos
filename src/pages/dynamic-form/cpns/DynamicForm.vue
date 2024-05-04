@@ -107,13 +107,6 @@ const formModel = ref<Record<string, any>>(
 
 // 表单初始化
 const initForm = () => {
-	// // copy schema
-	// formSchema.value = props.schema.items.map((x) => {
-	// 	return {
-	// 		...x,
-	// 	};
-	// });
-
 	// model初始数据
 	formModel.value = props.schema.items.reduce(
 		(pre: Record<string, any>, cur: DyFormItem) => {

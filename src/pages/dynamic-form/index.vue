@@ -307,13 +307,12 @@ const schema = ref<DyForm>({
 						},
 					];
 				},
-				enableSplit: true,
-				splitWord: ",",
+				enableSplit: false,
+				splitWord: "，",
 				title: "颜色",
 				style: {
 					width: "400px",
 				},
-				multiple: true,
 				allowClear: true,
 			},
 			formItemProps: {

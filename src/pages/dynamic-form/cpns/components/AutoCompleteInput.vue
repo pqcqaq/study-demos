@@ -23,7 +23,6 @@ type PropsType = {
 	width?: string;
 	enableSplit?: boolean;
 	splitWord?: string;
-	multiple?: boolean;
 };
 
 const props = defineProps<PropsType>();
@@ -65,7 +64,7 @@ const createFilter = (arr: { value: string }[], key: string) => {
 };
 
 const handleSelect = (select: string) => {
-	if (props.multiple) {
+	if (props.enableSplit) {
 		const dataWithoutFinalKey = alterData.value
 			? alterData.value.split(props.splitWord || ",").slice(0, -1)
 			: [];
