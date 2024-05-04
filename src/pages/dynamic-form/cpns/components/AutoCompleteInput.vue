@@ -66,10 +66,14 @@ const createFilter = (arr: { value: string }[], key: string) => {
 const handleSelect = (select: string) => {
 	if (props.enableSplit) {
 		const dataWithoutFinalKey = alterData.value
-			? alterData.value.split(props.splitWord || ",").slice(0, -1)
+			? alterData.value.endsWith(props.splitWord || ",")
+				? alterData.value.split(props.splitWord || ",").slice(0, -1)
+				: alterData.value.split(props.splitWord || ",")
 			: [];
 		const newValue = alterData.value
-			? dataWithoutFinalKey.join(props.splitWord || ",") + (props.splitWord || ",") + select
+			? dataWithoutFinalKey.join(props.splitWord || ",") +
+			  (props.splitWord || ",") +
+			  select
 			: select;
 		alterData.value = newValue;
 	} else {

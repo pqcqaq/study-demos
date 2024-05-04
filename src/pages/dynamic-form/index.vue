@@ -189,7 +189,6 @@ const schema = ref<DyForm>({
 			componentProps: {
 				checkedChildren: "开",
 				unCheckedChildren: "关",
-				size: "default"
 			},
 			value: true,
 			next: (model) => {
@@ -390,6 +389,46 @@ const schema = ref<DyForm>({
 					];
 				},
 				enableSplit: false,
+				splitWord: "，",
+				title: "角色",
+				style: {
+					width: "400px",
+				},
+				allowClear: true,
+			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请选择",
+						trigger: "blur",
+					},
+				],
+			},
+		},
+		//AutoComplete color 
+		{
+			label: "自动补全",
+			field: "autoCompleteColor",
+			component: "AutoComplete",
+			componentProps: {
+				fetchList: () => {
+					return [
+						{
+							value: "红色",
+						},
+						{
+							value: "绿色",
+						},
+						{
+							value: "蓝色",
+						},
+						{
+							value: "黄色",
+						},
+					];
+				},
+				enableSplit: true,
 				splitWord: "，",
 				title: "颜色",
 				style: {
