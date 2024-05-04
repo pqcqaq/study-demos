@@ -17,22 +17,24 @@ import {
 import type { Rule } from "ant-design-vue/es/form/interface";
 import type { TimePickerProps, TreeSelectProps } from "ant-design-vue";
 import { VNode, ref } from "vue";
+import AutoCompleteInput from "../cpns/components/AutoCompleteInput.vue";
 
 // 表单域组件类型
 export const componentsMap = {
-	Text: Input,
-	Textarea,
-	Number: InputNumber,
-	Select,
-	Radio: RadioGroup,
-	Checkbox: CheckboxGroup,
-	DatePicker,
-	Rate,
-	Slider,
-	Switch,
-	Upload,
-	TreeSelect,
-	TimePicker,
+	Text: { component: Input },
+	Textarea: { component: Textarea },
+	Number: { component: InputNumber },
+	Select: { component: Select },
+	Radio: { component: RadioGroup },
+	Checkbox: { component: CheckboxGroup },
+	DatePicker: { component: DatePicker },
+	Rate: { component: Rate },
+	Slider: { component: Slider },
+	Switch: { component: Switch },
+	Upload: { component: Upload },
+	TreeSelect: { component: TreeSelect },
+	TimePicker: { component: TimePicker },
+	AutoComplete: { component: AutoCompleteInput },
 };
 
 export type DyFormItem = {
@@ -107,6 +109,10 @@ export type DyFormItem = {
 		minuteStep?: number;
 		placeholder?: string;
 		valueFormat?: string;
+		fetchList?: () => Promise<string[]> | string[];
+		debounce?: number;
+		enableSplit?: boolean;
+		splitWord?: string;
 	};
 	formItemProps?: {
 		label?: string;

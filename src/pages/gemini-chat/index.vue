@@ -26,15 +26,15 @@ export default {
 				},
 				body: JSON.stringify({ prompts: prompts.value }),
 			})
-				.then((response) => {
-					const eventSource = new EventSource("/generate");
-					eventSource.onmessage = (event) => {
-						messages.value.push(event.data);
-					};
-				})
-				.catch((error) => {
-					console.error("Error:", error);
-				});
+				// .then((_response) => {
+				// 	const eventSource = new EventSource("/generate");
+				// 	eventSource.onmessage = (event:any) => {
+				// 		messages.value.push(event.data);
+				// 	};
+				// })
+				// .catch((error) => {
+				// 	console.error("Error:", error);
+				// });
 		};
 
 		return {

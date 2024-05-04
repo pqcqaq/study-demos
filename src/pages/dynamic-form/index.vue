@@ -285,6 +285,22 @@ const schema = ref<DyForm>({
 				multiple: true,
 			},
 		},
+		//AutoComplete
+		{
+			label: "自动补全",
+			field: "autoComplete",
+			component: "AutoComplete",
+			componentProps: {
+				fetchList: async () => {
+					return ["百里守约", "安琪拉", "李白", "韩信"];
+				},
+				enableSplit: true,
+				splitWord: ",",
+				style: {
+					width: "400px",
+				},
+			},
+		},
 	],
 	onSubmit: (model) => {
 		console.log("model", model);
