@@ -85,7 +85,7 @@ const props = defineProps<dynamicType>();
 const btnShow = computed(() => {
 	if (typeof props.showBtns === "boolean") {
 		return {
-			clearAll: 1,
+			clearAll: 0,
 			reset: 1,
 			submit: 1,
 		};
