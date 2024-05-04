@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import DynamicForm from "./cpns/DynamicForm.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { DyForm } from "./types/DynamicForm";
 
 const formRef = ref<InstanceType<typeof DynamicForm> | null>(null);
@@ -459,4 +459,15 @@ const model = ref<Record<string, any>>({
 const changeModel = () => {
 	model.value = { name: "安琪拉" };
 };
+
+watch(
+	() => model.value,
+	(newVal) => {
+		console.log("formModelValue", newVal);
+	},
+	{
+		deep: true,
+		immediate: true,
+	}
+);
 </script>

@@ -29,15 +29,13 @@
 					v-model:value="formModel[item.field]"
 				/>
 				<div class="subForms">
-					<keep-alive>
-						<DynamicForm
-							v-if="showNext(formModel[item.field], item)"
-							:schema="
-								nextFormSchema(formModel[item.field], item)
-							"
-							v-model="nextModel"
-						/>
-					</keep-alive>
+					<DynamicForm
+						v-if="showNext(formModel[item.field], item)"
+						:schema="nextFormSchema(formModel[item.field], item)"
+						v-model="nextModel"
+						:registe-to-parent="register"
+						:un-registe-from-parent="unRegister"
+					/>
 				</div>
 			</a-form-item>
 			<div
@@ -66,11 +64,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, defineAsyncComponent, computed } from "vue";
+import {
+	ref,
+	onMounted,
+	defineAsyncComponent,
+	computed,
+	onBeforeMount,
+	watch,
+	onUnmounted,
+	getCurrentInstance,
+	ComponentInternalInstance,
+} from "vue";
 import type { DyForm, DyFormItem } from "../types/DynamicForm";
 import { componentsMap } from "../types/DynamicForm";
 import { FormInstance } from "ant-design-vue/es/form/Form";
-import { isEqual } from "lodash";
 
 type BtnsShow = {
 	clearAll: 0 | 1;
@@ -82,6 +89,8 @@ type dynamicType = {
 	schema: DyForm;
 	modelValue: Record<string, any>;
 	showBtns?: boolean | BtnsShow;
+	registeToParent?: (selfIns: ComponentInternalInstance) => void;
+	unRegisteFromParent?: (selfIns: ComponentInternalInstance) => void;
 };
 
 const props = defineProps<dynamicType>();
@@ -96,22 +105,47 @@ const btnShow = computed(() => {
 	return props.showBtns;
 });
 const formRef = ref<FormInstance | null>(null);
+const selfInstance = getCurrentInstance();
+const nextModel = ref<Record<string, any>>({});
+const nextFormRefs = ref<ComponentInternalInstance[]>([]);
 
-const formModel = ref<Record<string, any>>(
-	props.schema.items.reduce((pre: Record<string, any>, cur: DyFormItem) => {
-		if (!pre[cur.field]) {
-			// 表单初始数据(默认值)
-			pre[cur.field] = cur.value;
-			return pre;
-		}
-		return {};
-	}, {} as Record<string, any>)
-);
+onMounted(() => {
+	if (props.registeToParent && selfInstance) {
+		props.registeToParent(selfInstance);
+	}
+});
+
+onUnmounted(() => {
+	if (props.unRegisteFromParent && selfInstance) {
+		props.unRegisteFromParent(selfInstance);
+	}
+});
+
+const register = (form: ComponentInternalInstance) => {
+	nextFormRefs.value.push(form as any);
+};
+
+const unRegister = (form: ComponentInternalInstance) => {
+	const index = nextFormRefs.value.findIndex((item) => item.uid == form.uid);
+	if (index > -1) {
+		nextFormRefs.value.splice(index, 1);
+	}
+};
+
+const emit = defineEmits(["update:modelValue"]);
+const formModel = computed({
+	get: () => {
+		return props.modelValue;
+	},
+	set: (value) => {
+		emit("update:modelValue", value);
+	},
+});
 
 // 表单初始化
 const initForm = () => {
 	// model初始数据
-	formModel.value = props.schema.items.reduce(
+	const rawModel = props.schema.items.reduce(
 		(pre: Record<string, any>, cur: DyFormItem) => {
 			if (!pre[cur.field]) {
 				// 表单初始数据(默认值)
@@ -122,21 +156,13 @@ const initForm = () => {
 		},
 		{} as Record<string, any>
 	);
+	formModel.value = { ...formModel.value, ...rawModel };
 };
+
+onBeforeMount(() => {});
 
 onMounted(() => {
 	initForm();
-	// 构建表单项后才回显model值,model会覆盖schema配置的value值
-	watch(
-		() => props.modelValue,
-		(newVal) => {
-			formModel.value = { ...formModel.value, ...newVal };
-		},
-		{
-			immediate: true,
-			deep: true,
-		}
-	);
 	hasNext.value = props.schema.items.some((item) => item.next);
 });
 
@@ -157,15 +183,23 @@ const validateFields = () => {
 // 表单重置
 const resetFields = (isInit = true) => {
 	// 是否清空默认值
-	if (isInit) {
-		formModel.value = {};
-	}
-	formRef.value?.resetFields();
+	// model初始数据
+	const rawModel = props.schema.items.reduce(
+		(pre: Record<string, any>, cur: DyFormItem) => {
+			if (!pre[cur.field]) {
+				// 表单初始数据(默认值)
+				pre[cur.field] = isInit ? undefined : cur.value;
+				return pre;
+			}
+			return {};
+		},
+		{} as Record<string, any>
+	);
+	formModel.value = { ...formModel.value, ...rawModel };
 };
 
 const DynamicForm = defineAsyncComponent(() => import("./DynamicForm.vue"));
 const hasNext = ref(false); // 是否有下一级表单
-const nextModel = ref<Record<string, any>>({}); // 下一级表单数据
 const showNext = computed(
 	() => (model: Record<string, any>, item: DyFormItem) => {
 		return nextFormSchema.value(model, item).items.length > 0;
@@ -173,16 +207,12 @@ const showNext = computed(
 );
 const nextFormSchema = computed(
 	() => (model: Record<string, any>, item: DyFormItem) => {
-		formModel.value["next"] = model;
 		return item.next?.(model) || { title: "", items: [] };
 	}
 );
 
 const handleSubmit = async () => {
-	const formData: { [key: string]: any } | undefined =
-		(await formRef.value?.validateFields()) || {};
-	formData["next"] = nextModel.value;
-	console.log("提交信息:", formData);
+	const formData = await validateThenGetModel();
 	props.schema.onSubmit?.(formData);
 };
 
@@ -194,27 +224,19 @@ const handleClear = () => {
 	resetFields();
 };
 
-const emit = defineEmits(["update:modelValue"]);
-
-watch(
-	() => formModel.value,
-	(newVal) => {
-		if (isEqual(newVal, props.modelValue)) {
-			emit("update:modelValue", newVal);
-		}
-	},
-	{
-		deep: true,
-		immediate: true,
-	}
-);
+const validateThenGetModel = async () => {
+	const formData = await validateFields();
+	nextFormRefs.value.forEach(async (form) => {
+		await form.exposed?.validateThenGetModel();
+	});
+	formData["next"] = nextModel.value;
+	return formData;
+};
 
 watch(
 	() => nextModel.value,
 	(newVal) => {
-		if (isEqual(newVal, formModel.value["next"])) {
-			formModel.value["next"] = newVal;
-		}
+		formModel.value["next"] = newVal;
 	},
 	{
 		deep: true,
@@ -226,9 +248,10 @@ watch(
 defineExpose({
 	validateFields,
 	resetFields,
+	validateThenGetModel,
 });
 </script>
-<style lang=scss scoped>
+<style lang="scss" scoped>
 .title {
 	font-size: 20px;
 	font-weight: bold;
