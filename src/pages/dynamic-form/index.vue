@@ -189,7 +189,7 @@ const schema = ref<DyForm>({
 			componentProps: {
 				checkedChildren: "开",
 				unCheckedChildren: "关",
-				checked: true,
+				size: "default"
 			},
 			value: true,
 			next: (model) => {

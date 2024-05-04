@@ -27,7 +27,6 @@
 					:is="componentsMap[item.component].component"
 					v-bind="item.componentProps"
 					v-model:value="formModel[item.field]"
-					v-model:checked="formModel[item.field]"
 				/>
 				<div class="subForms">
 					<keep-alive>

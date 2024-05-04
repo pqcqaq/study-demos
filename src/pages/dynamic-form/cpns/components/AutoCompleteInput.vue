@@ -16,7 +16,7 @@ import { computed, onMounted, ref } from "vue";
 
 type PropsType = {
 	title?: string;
-	value: string;
+	value: string | undefined;
 	fetchList:
 		| (() => Promise<{ value: string }[]> | { value: string }[])
 		| undefined;

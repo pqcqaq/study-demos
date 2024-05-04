@@ -9,7 +9,6 @@ import {
 	Rate,
 	Slider,
 	Upload,
-	Switch,
 	TreeSelect,
 	TimePicker,
 } from "ant-design-vue";
@@ -18,6 +17,7 @@ import type { Rule } from "ant-design-vue/es/form/interface";
 import type { TimePickerProps, TreeSelectProps } from "ant-design-vue";
 import { Component, VNode, ref } from "vue";
 import AutoCompleteInput from "../cpns/components/AutoCompleteInput.vue";
+import CustomSwitch from "../cpns/components/CustomSwitch.vue";
 
 // 表单域组件类型
 export const componentsMap: Record<
@@ -55,7 +55,7 @@ export const componentsMap: Record<
 		component: Slider,
 	},
 	Switch: {
-		component: Switch,
+		component: CustomSwitch,
 	},
 	Upload: {
 		component: Upload,
