@@ -1,9 +1,7 @@
 <template>
 	<a-auto-complete
 		v-model:value="alterData"
-		:placeholder="`输入${props.title ? props.title : '内容'}${
-			props.enableSplit ? '（以' + props.splitWord + '分割）' : ''
-		} 或选择已有${props.title}`"
+		:placeholder="`输入${title}内容${enableSplit ? '（以' + splitWord + '分割）' : ''} 或选择已有${title}`"
 		@select="handleSelect"
 		:options="promptList"
 		@search="onSearch"
@@ -12,9 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, defineProps, defineEmits } from "vue";
 
-type PropsType = {
+const props = defineProps<{
 	title?: string;
 	value: string | undefined;
 	fetchList:
@@ -23,9 +21,7 @@ type PropsType = {
 	width?: string;
 	enableSplit?: boolean;
 	splitWord?: string;
-};
-
-const props = defineProps<PropsType>();
+}>();
 const emit = defineEmits(["update:value"]);
 const list = ref<{ value: string }[]>([]);
 const promptList = ref<{ value: string }[]>([]);
@@ -47,33 +43,26 @@ const alterData = computed({
 	},
 });
 
+const finalSplitWord = computed(() => props.splitWord || ',');
+const title = computed(() => props.title || '内容');
+const enableSplit = computed(() => !!props.enableSplit);
+
 const createFilter = (arr: { value: string }[], key: string) => {
-	const finalKey = props.enableSplit
-		? key
-				.split(props.splitWord || ",")
-				.pop()
-				?.trim()
+	const finalKey = enableSplit.value
+		? key.split(finalSplitWord.value).pop()?.trim()
 		: key;
-	const newArr: { value: string }[] = [];
-	arr.forEach((item) => {
-		if (item.value.includes(finalKey || "") && item.value !== finalKey) {
-			newArr.push(item);
-		}
-	});
-	return newArr;
+	return arr.filter(item => item.value.includes(finalKey || "") && item.value !== finalKey);
 };
 
 const handleSelect = (select: string) => {
-	if (props.enableSplit) {
+	if (enableSplit.value) {
 		const dataWithoutFinalKey = alterData.value
-			? alterData.value.endsWith(props.splitWord || ",")
-				? alterData.value.split(props.splitWord || ",").slice(0, -1)
-				: alterData.value.split(props.splitWord || ",")
+			? alterData.value.endsWith(finalSplitWord.value)
+				? alterData.value.split(finalSplitWord.value).slice(0, -1)
+				: alterData.value.split(finalSplitWord.value)
 			: [];
 		const newValue = alterData.value
-			? dataWithoutFinalKey.join(props.splitWord || ",") +
-			  (props.splitWord || ",") +
-			  select
+			? [...dataWithoutFinalKey, select].join(finalSplitWord.value)
 			: select;
 		alterData.value = newValue;
 	} else {
