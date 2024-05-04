@@ -1,10 +1,25 @@
 <template>
 	<div>
-		<a-form ref="formRef" :model="formModel" v-bind="$attrs">
+		<div
+			class="title"
+			style="
+				display: flex;
+				justify-content: center;
+				margin-bottom: 10px;
+				align-items: center;
+			"
+		>
+			{{ props.schema.title }}
+		</div>
+		<a-form
+			ref="formRef"
+			:model="formModel"
+			v-bind="$attrs && props.schema.formProps"
+		>
 			<a-form-item
 				:name="item.field"
 				:label="item.label"
-				v-for="item in formSchema"
+				v-for="item in props.schema.items"
 				:key="item.field"
 				v-bind="item.formItemProps"
 			>
@@ -12,62 +27,111 @@
 					:is="componentsMap[item.component]"
 					v-bind="item.componentProps"
 					v-model:value="formModel[item.field]"
+					v-model:checked="formModel[item.field]"
 				/>
 				<div class="subForms">
 					<DynamicForm
 						v-if="showNext(formModel[item.field], item)"
 						:schema="nextFormSchema(formModel[item.field], item)"
-						:model="nextModel"
+						v-model="nextModel"
 					/>
 				</div>
 			</a-form-item>
+			<div
+				v-if="props.showBtns"
+				style="display: flex; justify-content: center"
+			>
+				<a-button v-if="btnShow?.clearAll" @click="handleClear"
+					>重置(全部清空)</a-button
+				>
+				<a-button
+					v-if="btnShow?.reset"
+					style="margin-left: 50px"
+					@click="handleReset"
+					>重置</a-button
+				>
+				<a-button
+					v-if="btnShow?.submit"
+					type="primary"
+					style="margin-left: 50px"
+					@click="handleSubmit"
+					>提交</a-button
+				>
+			</div>
 		</a-form>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import { ref, watch, onMounted, defineAsyncComponent, computed } from "vue";
-import type { DyForm } from "../types/DynamicForm";
+import type { DyForm, DyFormItem } from "../types/DynamicForm";
 import { componentsMap } from "../types/DynamicForm";
 import { FormInstance } from "ant-design-vue/es/form/Form";
 
+type BtnsShow = {
+	clearAll: 0 | 1;
+	reset: 0 | 1;
+	submit: 0 | 1;
+};
+
 type dynamicType = {
-	schema: Array<DyForm>;
-	model: Record<string, any>;
+	schema: DyForm;
+	modelValue: Record<string, any>;
+	showBtns?: boolean | BtnsShow;
 };
 
 const props = defineProps<dynamicType>();
-
+const btnShow = computed(() => {
+	if (typeof props.showBtns === "boolean") {
+		return {
+			clearAll: 1,
+			reset: 1,
+			submit: 1,
+		};
+	}
+	return props.showBtns;
+});
 const formRef = ref<FormInstance | null>(null);
 
-const formSchema = ref<DyForm[]>([]);
-const formModel = ref<any>({});
+const formModel = ref<Record<string, any>>(
+	props.schema.items.reduce((pre: Record<string, any>, cur: DyFormItem) => {
+		if (!pre[cur.field]) {
+			// 表单初始数据(默认值)
+			pre[cur.field] = cur.value;
+			return pre;
+		}
+		return {};
+	}, {} as Record<string, any>)
+);
 
 // 表单初始化
 const initForm = () => {
-	// copy schema
-	formSchema.value = props.schema.map((x) => {
-		return {
-			...x,
-		};
-	});
+	// // copy schema
+	// formSchema.value = props.schema.items.map((x) => {
+	// 	return {
+	// 		...x,
+	// 	};
+	// });
 
 	// model初始数据
-	formModel.value = props.schema.reduce((pre: DyForm, cur: DyForm) => {
-		if (!(pre as any)[cur.field]) {
-			// 表单初始数据(默认值)
-			(pre as any)[cur.field] = cur.value;
-			return pre;
-		}
-		return {} as DyForm;
-	}, {} as DyForm);
+	formModel.value = props.schema.items.reduce(
+		(pre: Record<string, any>, cur: DyFormItem) => {
+			if (!pre[cur.field]) {
+				// 表单初始数据(默认值)
+				pre[cur.field] = cur.value;
+				return pre;
+			}
+			return {};
+		},
+		{} as Record<string, any>
+	);
 };
 
 onMounted(() => {
 	initForm();
 	// 构建表单项后才回显model值,model会覆盖schema配置的value值
 	watch(
-		() => props.model,
+		() => props.modelValue,
 		(newVal) => {
 			formModel.value = { ...formModel.value, ...newVal };
 		},
@@ -76,11 +140,14 @@ onMounted(() => {
 			deep: true,
 		}
 	);
+	hasNext.value = props.schema.items.some((item) => item.next);
 });
 
 // 表单验证
 const validateFields = () => {
-	return new Promise((resolve, reject) => {
+	return new Promise<{
+		[key: string]: any;
+	}>((resolve, reject) => {
 		formRef.value
 			?.validateFields()
 			.then((formData) => {
@@ -100,14 +167,63 @@ const resetFields = (isInit = true) => {
 };
 
 const DynamicForm = defineAsyncComponent(() => import("./DynamicForm.vue"));
-const nextModel = ref<any>({});
-const showNext = computed(() => (model: any, item: DyForm) => {
-	return nextFormSchema.value(model, item).length > 0;
-});
-const nextFormSchema = computed(() => (model: any, item: DyForm) => {
-	formModel.value["next"] = model;
-	return item.next?.(model) || [];
-});
+const hasNext = ref(false); // 是否有下一级表单
+const nextModel = ref<Record<string, any>>({}); // 下一级表单数据
+const showNext = computed(
+	() => (model: Record<string, any>, item: DyFormItem) => {
+		return nextFormSchema.value(model, item).items.length > 0;
+	}
+);
+const nextFormSchema = computed(
+	() => (model: Record<string, any>, item: DyFormItem) => {
+		formModel.value["next"] = model;
+		return item.next?.(model) || { title: "", items: [] };
+	}
+);
+
+const handleSubmit = async () => {
+	const formData: { [key: string]: any } | undefined =
+		(await formRef.value?.validateFields()) || {};
+	formData["next"] = nextModel.value;
+	console.log("提交信息:", formData);
+	props.schema.onSubmit?.(formData);
+};
+
+const handleReset = () => {
+	resetFields(false);
+};
+
+const handleClear = () => {
+	resetFields();
+};
+
+const emit = defineEmits(["update:modelValue"]);
+
+watch(
+	() => formModel.value,
+	(newVal) => {
+		if (JSON.stringify(props.modelValue) !== JSON.stringify(newVal)) {
+			emit("update:modelValue", newVal);
+		}
+	},
+	{
+		deep: true,
+		immediate: true,
+	}
+);
+
+watch(
+	() => nextModel.value,
+	(newVal) => {
+		if (JSON.stringify(nextModel.value) !== JSON.stringify(newVal)) {
+			formModel.value["next"] = newVal;
+		}
+	},
+	{
+		deep: true,
+		immediate: true,
+	}
+);
 
 // 暴露方法
 defineExpose({

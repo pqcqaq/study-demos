@@ -6,7 +6,17 @@ import {
 	RadioGroup,
 	CheckboxGroup,
 	DatePicker,
+	Rate,
+	Slider,
+	Upload,
+	Switch,
+	TreeSelect,
+	TimePicker,
 } from "ant-design-vue";
+
+import type { Rule } from "ant-design-vue/es/form/interface";
+import type { TimePickerProps, TreeSelectProps } from "ant-design-vue";
+import { VNode } from "vue";
 
 // 表单域组件类型
 export const componentsMap = {
@@ -17,32 +27,137 @@ export const componentsMap = {
 	Radio: RadioGroup,
 	Checkbox: CheckboxGroup,
 	DatePicker,
+	Rate,
+	Slider,
+	Switch,
+	Upload,
+	TreeSelect,
+	TimePicker,
 };
 
-export type FItemAction = "add" | "remove" | "update" | "blur";
-
-export type DyForm = {
+export type DyFormItem = {
 	label: string;
 	field: string;
 	component: keyof typeof componentsMap;
-	componentProps?:  {
+	componentProps?: {
 		style?: Partial<CSSStyleDeclaration>;
 		allowClear?: boolean;
 		showCount?: boolean;
 		maxlength?: number;
 		autoSize?: boolean | { minRows: number; maxRows: number };
 		options?: { label: string; value: string | number }[];
+		allowHalf?: boolean;
+		autofocus?: boolean;
+		character?: string;
+		count?: number;
+		disabled?: boolean;
+		tooltips?: string[];
+		dots?: boolean;
+		included?: boolean;
+		max?: number;
+		min?: number;
+		marks?: Record<number, string>;
+		range?: boolean;
+		reverse?: boolean;
+		step?: number;
+		vertical?: boolean;
+		tipFormatter?: (value: number) => string;
+		tooltipPlacement?: "top" | "left" | "right" | "bottom";
+		tooltipOpen?: boolean;
+		getTooltipPopupContainer?: () => HTMLElement;
+		checked?: boolean;
+		checkedChildren?: string;
+		checkedValue?: string | number | boolean;
+		loading?: boolean;
+		size?: "default" | "small" | "large";
+		unCheckedChildren?: string;
+		unCheckedValue?: string | number | boolean;
+		accept?: string;
+		action?: string;
+		beforeUpload?: (
+			file: File,
+			fileList: File[]
+		) => boolean | Promise<boolean>;
+		customRequest?: (options: { action: string; file: File }) => void;
+		data?: Record<string, any>;
+		directory?: boolean;
+		fileList?: File[];
+		headers?: Record<string, any>;
+		maxCount?: number;
+		method?: string;
+		multiple?: boolean;
+		treeData?: TreeSelectProps["treeData"];
+		defaultValue?: string | number | string[] | number[] | null;
+		popupClassName?: string;
+		dropdownMatchSelectWidth?: boolean;
+		dropdownStyle?: Partial<CSSStyleDeclaration>;
+		fieldNames?: TreeSelectProps["fieldNames"];
+		filterTreeNode?: TreeSelectProps["filterTreeNode"];
+		getPopupContainer?: TreeSelectProps["getPopupContainer"];
+		loadData?: TreeSelectProps["loadData"];
+		maxTagCount?: number;
+		maxTagPlaceholder?: (omittedValues: string[]) => string | VNode;
+		notFoundContent?: string;
+		placement?: TreeSelectProps["placement"];
+		treeLine?: boolean | TreeSelectProps["treeLine"];
+		bordered?: boolean;
+		clearText?: string;
+		disabledTime?: TimePickerProps["disabledTime"];
+		format?: string;
+		minuteStep?: number;
+		placeholder?: string;
+		valueFormat?: string;
 	};
 	formItemProps?: {
 		label?: string;
-		rules?: {
-			required?: boolean;
-			message: string;
-			validator?: (rule: any, value: any) => Promise<void>;
-			trigger?: FItemAction | FItemAction[];
-		}[];
+		rules?: Rule[];
 		style?: Partial<CSSStyleDeclaration>;
+		required?: boolean | ((values: Record<string, any>) => boolean);
+		hidden?: boolean | ((values: Record<string, any>) => boolean);
+		autoLink?: boolean;
+		colon?: boolean;
+		extra?: string;
+		hasFeedback?: boolean;
+		help?: string;
+		htmlFor?: string;
+		labelAlign?: "left" | "right";
+		labelCol?: { span: number; offset?: number };
+		tooltip?: string;
+		validateFirst?: boolean;
+		validateStatus?: "success" | "warning" | "error" | "validating" | "";
+		wrapperCol?: { span: number; offset?: number };
 	};
-	value?: string | number;
-	next?: (modelValue:any) => DyForm[];
+	value?:
+		| string
+		| number
+		| boolean
+		| string[]
+		| number[]
+		| File
+		| File[]
+		| null;
+	next?: (modelValue: Record<string, any>) => DyForm | undefined | null;
+};
+
+export type DyForm = {
+	title?: string;
+	items: DyFormItem[];
+	onSubmit?: (values: Record<string, any>) => void;
+	onReset?: () => void;
+	formProps?: {
+		colon?: boolean;
+		disabled?: boolean;
+		hideRequiredMark?: boolean;
+		labelAlign?: "left" | "right";
+		labelCol?: { span: number; offset?: number };
+		labelWrap?: boolean;
+		layout?: "horizontal" | "vertical" | "inline";
+		name?: string;
+		noStyle?: boolean;
+		rules?: Rule[];
+		scrollToFirstError?: boolean;
+		validateOnRuleChange?: boolean;
+		validateTrigger?: string | string[];
+		wrapperCol?: { span: number; offset?: number };
+	};
 };

@@ -10,6 +10,7 @@ declare module 'vue' {
     AButton: typeof import('ant-design-vue/es')['Button']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
+    ASwitch: typeof import('ant-design-vue/es')['Switch']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElDialog: typeof import('element-plus/es')['ElDialog']
