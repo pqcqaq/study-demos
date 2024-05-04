@@ -406,7 +406,7 @@ const schema = ref<DyForm>({
 				],
 			},
 		},
-		//AutoComplete color 
+		//AutoComplete color
 		{
 			label: "自动补全",
 			field: "autoCompleteColor",
@@ -457,13 +457,37 @@ const model = ref<Record<string, any>>({
 });
 
 const changeModel = () => {
-	model.value = { name: "安琪拉" };
+	model.value = {
+		name: "百里守约",
+		sex: 1,
+		birthday: "2024-04-28",
+		hobby: [1, 2],
+		country: 2,
+		desc: "11111",
+		switch: true,
+		slider: 30,
+		rate: 8,
+		tree: ["0-1"],
+		autoComplete: "百里守约",
+		autoCompleteColor: "蓝色",
+		next: {
+			next: {
+				next: {
+					next: {},
+					closeReason: "111111",
+				},
+				closeTime: "20:16:45",
+			},
+			openTime: "20:16:36",
+			weapon: "1220204124@zust.deu.cn",
+		},
+	};
 };
 
 watch(
 	() => model.value,
 	(newVal) => {
-		console.log("formModelValue", newVal);
+		console.log("formModelValue", JSON.stringify(newVal));
 	},
 	{
 		deep: true,

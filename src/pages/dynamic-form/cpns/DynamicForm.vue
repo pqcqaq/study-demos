@@ -28,7 +28,7 @@
 					v-bind="item.componentProps"
 					v-model:value="formModel[item.field]"
 				/>
-				<div class="subForms">
+				<div class="subForms" v-if="hasNext">
 					<DynamicForm
 						v-if="showNext(formModel[item.field], item)"
 						:schema="nextFormSchema(formModel[item.field], item)"
@@ -241,6 +241,15 @@ watch(
 	{
 		deep: true,
 		immediate: true,
+	}
+);
+
+watch(
+	() => formModel.value,
+	(newVal) => {
+		if (newVal["next"]) {
+			nextModel.value = newVal["next"];
+		}
 	}
 );
 
