@@ -26,7 +26,7 @@ const info = ref<string[]>([]);
 const model = ref<string>("");
 
 const demoAttr = ref<Record<string, any>>({
-	value: "hello",
+	// value: "hello",
 	placeholder: "请输入",
 	style: {
 		width: "600px",
@@ -49,14 +49,15 @@ const demoEvent = ref<Record<string, Function>>({
 	// onTest: () => {
 	//     console.log("onTest");
 	//     info.value.push("onTest");
+    // },
+    // 如果自己写了这样的一个方法去覆盖掉原生的model的update事件，则必须要兼容原有的update事件，同时因为覆盖的关系，在编译之后会导致这个组件异常
+	// "update:value": (value: string) => {
+	// 	console.log("onUpdate:value", value);
+	// 	info.value.push("onUpdate:value");
+    //     model.value = value;
+    //     // 还需要更新value，因为在组件内部，v-model绑定的是value
+    //     demoAttr.value.value = value;
 	// },
-	"update:value": (value: string) => {
-		console.log("onUpdate:value", value);
-		info.value.push("onUpdate:value");
-        model.value = value;
-        // 还需要更新value，因为在组件内部，v-model绑定的是value
-        demoAttr.value.value = value;
-	},
 });
 </script>
 

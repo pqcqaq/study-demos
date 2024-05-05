@@ -34,12 +34,13 @@ const emit = defineEmits([
 	"onUpdate",
 	"onClick",
 	"onTest",
-	"update:value",
+    "update:value",
+    "update:modelValue",
 ]);
 
 const modelValue = computed({
 	get: () => prop.modelValue,
-	set: (value) => emit("update:value", value),
+	set: (value) => emit("update:modelValue", value),
 });
 </script>
 
