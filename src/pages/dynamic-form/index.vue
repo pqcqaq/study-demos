@@ -73,9 +73,10 @@ const schema = ref<DyForm>({
 									rules: [
 										{
 											required: true,
-											message: "格式不正确",
+											message: "武器只能是ABCDE中的一个",
 											trigger: "blur",
-											type: "email",
+											type: "enum",
+											enum: ["A", "B", "C", "D", "E"],
 										},
 									],
 									style: {
@@ -541,6 +542,54 @@ const schema = ref<DyForm>({
 						trigger: "blur",
 					},
 				],
+			},
+			next: (model) => {
+				if (((model as string) || "").includes("蓝色")) {
+					return {
+						items: [
+							{
+								label: "选择类型",
+								field: "type",
+								component: "AutoComplete",
+								componentProps: {
+									fetchList: [
+										{
+											value: "类型1",
+										},
+										{
+											value: "类型2",
+										},
+										{
+											value: "类型3",
+										},
+										{
+											value: "类型4",
+										},
+									],
+									enableSplit: true,
+									splitWord: "，",
+									title: "类型",
+									allowClear: true,
+									style: {
+										width: "350px",
+									},
+								},
+								formItemProps: {
+									rules: [
+										{
+											required: true,
+											message: "请选择",
+											trigger: "blur",
+										},
+									],
+									style: {
+										width: "400px",
+									},
+								},
+							},
+						],
+					};
+				}
 			},
 		},
 	],

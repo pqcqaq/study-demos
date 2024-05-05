@@ -71,6 +71,11 @@ export const componentsMap: Record<
 	},
 };
 
+type AutoInputList = {
+	label?: string;
+	value: string;
+};
+
 export type DyFormItem = {
 	label: string;
 	field: string;
@@ -143,7 +148,9 @@ export type DyFormItem = {
 		minuteStep?: number;
 		placeholder?: string;
 		valueFormat?: string;
-		fetchList?: () => Promise<{ value: string }[]> | { value: string }[];
+		fetchList?:
+			| (() => Promise<AutoInputList[]> | AutoInputList[])
+			| AutoInputList[];
 		debounce?: number;
 		enableSplit?: boolean;
 		splitWord?: string;
@@ -178,7 +185,15 @@ export type DyFormItem = {
 		| File[]
 		| null;
 	next?: (
-		modelValue: Record<string, any> | string | number | boolean | File | string[] | number[] | File[]
+		modelValue:
+			| Record<string, any>
+			| string
+			| number
+			| boolean
+			| File
+			| string[]
+			| number[]
+			| File[]
 	) => DyForm | undefined | null;
 };
 

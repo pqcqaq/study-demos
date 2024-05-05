@@ -1,35 +1,46 @@
 <template>
 	<a-auto-complete
 		v-model:value="alterData"
-		:placeholder="`输入${title}内容${enableSplit ? '（以' + splitWord + '分割）' : ''} 或选择已有${title}`"
+		:placeholder="`输入${title}内容${
+			enableSplit ? '（以' + splitWord + '分割）' : ''
+		} 或选择已有${title}`"
 		@select="handleSelect"
 		:options="promptList"
 		@search="onSearch"
-		v-bind="$attrs"
+		v-bind="$attrs && props.style"
 	/>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref, defineProps, defineEmits } from "vue";
 
+type AutoInputList = {
+	label?: string;
+	value: string;
+};
+
 const props = defineProps<{
 	title?: string;
 	value: string | undefined;
 	fetchList:
-		| (() => Promise<{ value: string }[]> | { value: string }[])
+		| (() => Promise<AutoInputList[]> | AutoInputList[])
+		| AutoInputList[]
 		| undefined;
-	width?: string;
+	style?: Partial<CSSStyleDeclaration>;
 	enableSplit?: boolean;
 	splitWord?: string;
 }>();
 const emit = defineEmits(["update:value"]);
-const list = ref<{ value: string }[]>([]);
-const promptList = ref<{ value: string }[]>([]);
+const list = ref<AutoInputList[]>([]);
+const promptList = ref<AutoInputList[]>([]);
 
 onMounted(async () => {
+	if (!props.fetchList) return;
 	if (props.fetchList instanceof Function) {
 		const newList = await props.fetchList();
 		list.value.push(...newList);
+	} else {
+		list.value.push(...props.fetchList);
 	}
 	promptList.value = list.value;
 });
@@ -43,15 +54,17 @@ const alterData = computed({
 	},
 });
 
-const finalSplitWord = computed(() => props.splitWord || ',');
-const title = computed(() => props.title || '内容');
+const finalSplitWord = computed(() => props.splitWord || ",");
+const title = computed(() => props.title || "内容");
 const enableSplit = computed(() => !!props.enableSplit);
 
 const createFilter = (arr: { value: string }[], key: string) => {
 	const finalKey = enableSplit.value
 		? key.split(finalSplitWord.value).pop()?.trim()
 		: key;
-	return arr.filter(item => item.value.includes(finalKey || "") && item.value !== finalKey);
+	return arr.filter(
+		(item) => item.value.includes(finalKey || "") && item.value !== finalKey
+	);
 };
 
 const handleSelect = (select: string) => {
