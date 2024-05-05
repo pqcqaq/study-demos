@@ -20,6 +20,44 @@ import { DyForm } from "./types/DynamicForm";
 
 const formRef = ref<InstanceType<typeof DynamicForm> | null>(null);
 
+	const getOption = async () => {
+    return new Promise<
+        {
+            label: string;
+            value: string | number;
+        }[]
+    >((resolve, reject) => {
+        setTimeout(() => {
+            // 模拟50%的概率失败
+            const random = Math.random();
+            if (random < 0.3) {
+                resolve([
+                    {
+                        value: "111111",
+                        label: "111111",
+                    },
+                    {
+                        value: "222222",
+                        label: "222222",
+                    },
+                    {
+                        value: "333333",
+                        label: "333333",
+                    },
+                    {
+                        value: "444444",
+                        label: "444444",
+                    },
+                ]);
+            } else {
+                reject("Failed to get options.");
+            }
+        }, 200);
+    });
+};
+
+
+
 const schema = ref<DyForm>({
 	title: "dynamicForm",
 	formProps: {
@@ -209,6 +247,25 @@ const schema = ref<DyForm>({
 				}
 			},
 		},
+		// async radio
+		{
+			label: "异步选择",
+			field: "async-test",
+			component: "Radio",
+			componentProps: {
+				options: () => getOption(),
+			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请选择性别",
+						trigger: "blur",
+					},
+				],
+			},
+			value: 1,
+		},
 		// datepicker
 		{
 			label: "生日",
@@ -239,6 +296,15 @@ const schema = ref<DyForm>({
 					{ value: 2, label: "篮球" },
 					{ value: 3, label: "排球" },
 				],
+			},
+		},
+		// async checkbox 
+		{
+			label: "异步多选",
+			field: "async-checkbox",
+			component: "Checkbox",
+			componentProps: {
+				options: () => getOption(),
 			},
 		},
 		// select
@@ -405,7 +471,7 @@ const schema = ref<DyForm>({
 				},
 			},
 			next: (model) => {
-				if ((model as number || 0) > 50) {
+				if (((model as number) || 0) > 50) {
 					return {
 						items: [
 							{

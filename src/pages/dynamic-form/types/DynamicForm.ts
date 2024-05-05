@@ -3,8 +3,6 @@ import {
 	Textarea,
 	InputNumber,
 	Select,
-	RadioGroup,
-	CheckboxGroup,
 	DatePicker,
 	Rate,
 	Slider,
@@ -19,6 +17,8 @@ import { Component, Slot, VNode, ref } from "vue";
 import AutoCompleteInput from "../cpns/components/AutoCompleteInput.vue";
 import CustomSwitch from "../cpns/components/CustomSwitch.vue";
 import TagShow from "../cpns/components/TagShow.vue";
+import AsyncRadio from "../cpns/components/AsyncRadio.vue";
+import AsyncCheckBox from "../cpns/components/AsyncCheckBox.vue";
 
 // 表单域组件类型
 export const componentsMap: Record<
@@ -41,10 +41,10 @@ export const componentsMap: Record<
 		component: Select,
 	},
 	Radio: {
-		component: RadioGroup,
+		component: AsyncRadio,
 	},
 	Checkbox: {
-		component: CheckboxGroup,
+		component: AsyncCheckBox,
 	},
 	DatePicker: {
 		component: DatePicker,
@@ -75,6 +75,12 @@ export const componentsMap: Record<
 	},
 };
 
+type Options = Array<{ label: string; value: string | number }>;
+
+type OptionsGetter =
+	| Options
+	| (() => Options | Promise<Options>);
+
 type AutoInputList = {
 	label?: string;
 	value: string;
@@ -90,7 +96,7 @@ export type DyFormItem = {
 		showCount?: boolean;
 		maxlength?: number;
 		autoSize?: boolean | { minRows: number; maxRows: number };
-		options?: { label: string; value: string | number }[];
+		options?: OptionsGetter;
 		allowHalf?: boolean;
 		autofocus?: boolean;
 		character?: string;
