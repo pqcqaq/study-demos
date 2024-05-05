@@ -21,7 +21,7 @@
 import { computed, onMounted, ref } from "vue";
 
 type propsType = {
-	value: string | number;
+	value: string | number | undefined;
 	options:
 		| Array<{ label: string; value: string | number }>
 		| (() =>

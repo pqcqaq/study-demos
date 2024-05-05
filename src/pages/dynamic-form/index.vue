@@ -679,8 +679,13 @@ const schema = ref<DyForm>({
 			},
 		},
 	],
-	onSubmit: (model) => {
-		console.log("model", model);
+	onSubmit: async (model) => {
+		await new Promise((resolve) => {
+			setTimeout(() => {
+				console.log("model", model);
+				resolve(null);
+			}, 1000);
+		});
 	},
 });
 
@@ -762,9 +767,10 @@ const changeSchema = () => {
 									rules: [
 										{
 											required: true,
-											message: "格式不正确",
+											message: "武器只能是ABCDE中的一个",
 											trigger: "blur",
-											type: "email",
+											type: "enum",
+											enum: ["A", "B", "C", "D", "E"],
 										},
 									],
 									style: {

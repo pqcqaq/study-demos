@@ -15,6 +15,7 @@
 			ref="formRef"
 			:model="formModel"
 			v-bind="$attrs && props.schema.formProps"
+			:disabled="loading || props.disabled"
 		>
 			<a-form-item
 				:name="item.field"
@@ -35,6 +36,8 @@
 						v-model="nextModel"
 						:registe-to-parent="register"
 						:un-registe-from-parent="unRegister"
+						:disabled="props.disabled || loading"
+						:show-btns="false"
 					/>
 				</div>
 			</a-form-item>
@@ -91,6 +94,7 @@ type dynamicType = {
 	showBtns?: boolean | BtnsShow;
 	registeToParent?: (selfIns: ComponentInternalInstance) => void;
 	unRegisteFromParent?: (selfIns: ComponentInternalInstance) => void;
+	disabled?: boolean;
 };
 
 const props = defineProps<dynamicType>();
@@ -211,9 +215,18 @@ const nextFormSchema = computed(
 	}
 );
 
+const loading = ref(false);
+
 const handleSubmit = async () => {
-	const formData = await validateThenGetModel();
-	props.schema.onSubmit?.(formData);
+	loading.value = true;
+	try {
+		const formData = await validateThenGetModel();
+		await props.schema.onSubmit?.(formData);
+	} catch (error) {
+		console.error("在数据提交时发生错误：", error);
+	} finally {
+		loading.value = false;
+	}
 };
 
 const handleReset = () => {
@@ -226,9 +239,9 @@ const handleClear = () => {
 
 const validateThenGetModel = async () => {
 	const formData = await validateFields();
-	nextFormRefs.value.forEach(async (form) => {
-		await form.exposed?.validateThenGetModel();
-	});
+	for (let element of nextFormRefs.value) {
+		await element.exposed?.validateThenGetModel();
+	}
 	formData["next"] = nextModel.value;
 	return formData;
 };
