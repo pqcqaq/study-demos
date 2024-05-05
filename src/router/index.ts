@@ -91,6 +91,12 @@ export const routes: Array<RouteRecordRaw> = [
 				component: () => import("../pages/gemini-chat/index.vue"),
 				meta: { requiresAuth: false, breadcrumb: "Gemini-chat测试" },
 			},
+			{
+				path: "cpns-demo",
+				name: "组件传参测试",
+				component: () => import("../pages/cpns-demo/index.vue"),
+				meta: { requiresAuth: false, breadcrumb: "组件传参测试" },
+			},
 		],
 	},
 	// {
