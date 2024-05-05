@@ -54,6 +54,7 @@ const demoEvent = ref<Record<string, Function>>({
 		console.log("onUpdate:value", value);
 		info.value.push("onUpdate:value");
         model.value = value;
+        // 还需要更新value，因为在组件内部，v-model绑定的是value
         demoAttr.value.value = value;
 	},
 });
