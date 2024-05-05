@@ -13,6 +13,7 @@ declare module 'vue' {
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
     ASwitch: typeof import('ant-design-vue/es')['Switch']
+    ATag: typeof import('ant-design-vue/es')['Tag']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']

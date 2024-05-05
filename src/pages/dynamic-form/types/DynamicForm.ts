@@ -15,9 +15,10 @@ import {
 
 import type { Rule } from "ant-design-vue/es/form/interface";
 import type { TimePickerProps, TreeSelectProps } from "ant-design-vue";
-import { Component, VNode, ref } from "vue";
+import { Component, Slot, VNode, ref } from "vue";
 import AutoCompleteInput from "../cpns/components/AutoCompleteInput.vue";
 import CustomSwitch from "../cpns/components/CustomSwitch.vue";
+import TagShow from "../cpns/components/TagShow.vue";
 
 // 表单域组件类型
 export const componentsMap: Record<
@@ -68,6 +69,9 @@ export const componentsMap: Record<
 	},
 	AutoComplete: {
 		component: AutoCompleteInput,
+	},
+	Tag: {
+		component: TagShow,
 	},
 };
 
@@ -155,6 +159,10 @@ export type DyFormItem = {
 		enableSplit?: boolean;
 		splitWord?: string;
 		title?: string;
+		closable?: boolean;
+		closeIcon?: VNode | Slot;
+		color?: string;
+		icon?: VNode | Slot;
 	};
 	formItemProps?: {
 		label?: string;

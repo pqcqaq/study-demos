@@ -400,8 +400,28 @@ const schema = ref<DyForm>({
 				max: 100,
 				marks: {
 					0: "0%",
+					50: "50%",
 					100: "100%",
 				},
+			},
+			next: (model) => {
+				if ((model as number || 0) > 50) {
+					return {
+						items: [
+							{
+								label: "提示信息",
+								field: "tip",
+								component: "Tag",
+								componentProps: {
+									bordered: true,
+									color: "red",
+									size: "large",
+								},
+								value: "你选中的值已经超过50",
+							},
+						],
+					};
+				}
 			},
 		},
 		{
