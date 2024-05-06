@@ -45,6 +45,7 @@ const msg = ref("加载中....");
 const Realoptions = ref<Array<{ label: string; value: string | number }>>([]);
 
 const getData = async () => {
+    msg.value = "加载中....";
 	try {
 		if (props.options instanceof Function) {
 			const optionsPromise = await props.options();
