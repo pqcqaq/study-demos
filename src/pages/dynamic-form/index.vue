@@ -52,7 +52,7 @@ const getOption = async () => {
 		setTimeout(() => {
 			// 模拟50%的概率失败
 			const random = Math.random();
-			if (random < 0.3) {
+			if (random < 0.8) {
 				resolve([
 					{
 						value: "111111",
