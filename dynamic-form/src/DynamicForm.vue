@@ -19,11 +19,14 @@
 			:class="props.schema.className || 'dynamic-form'"
 			v-on="{ ...props.schema.formEvent, onNull: () => {} }"
 		>
-			<div class="items" v-for="item in props.schema.items">
+			<div
+				class="items"
+				:key="item.field"
+				v-for="item in props.schema.items"
+			>
 				<a-form-item
 					:name="item.field"
 					:label="item.label"
-					:key="item.field"
 					v-bind="item.formItemProps"
 					:class="
 						item.formItemProps?.className || 'dynamic-form-item'
