@@ -7,7 +7,10 @@
 		@select="handleSelect"
 		:options="promptList"
 		@search="onSearch"
-		v-bind="$attrs && props.style"
+		v-bind="{
+			...$attrs,
+			style: props.style,
+		}"
 	/>
 </template>
 
