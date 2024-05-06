@@ -141,6 +141,47 @@ const test: DyForm = {
 				tooltip: "在这里输入学号",
 			},
 		},
+		//Mentions
+		{
+			label: "Mentions",
+			field: "mentions",
+			component: "Mentions",
+			componentProps: {
+				allowClear: true,
+				placeholder: "输入 @ 触发",
+				prefix: ["@"],
+				autofocus: true,
+				options: [
+					{
+						value: "百里守约",
+						label: "百里守约",
+					},
+					{
+						value: "安琪拉",
+						label: "安琪拉",
+					},
+					{
+						value: "李白",
+						label: "李白",
+					},
+					{
+						value: "韩信",
+						label: "韩信",
+					},
+				],
+			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请输入内容",
+						trigger: "blur",
+					},
+				],
+				colon: false,
+				tooltip: "在这里输入内容",
+			},
+		},
 	],
 	onSubmit: async (model) => {
 		await new Promise((resolve) => {

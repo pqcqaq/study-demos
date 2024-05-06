@@ -9,10 +9,15 @@ import {
 	Upload,
 	TreeSelect,
 	TimePicker,
+	Mentions,
 } from "ant-design-vue";
 
 import type { Rule } from "ant-design-vue/es/form/interface";
-import type { TimePickerProps, TreeSelectProps } from "ant-design-vue";
+import type {
+	MentionsProps,
+	TimePickerProps,
+	TreeSelectProps,
+} from "ant-design-vue";
 import { Component, Slot, VNode, createApp, ref } from "vue";
 import AutoCompleteInput from "./components/AutoCompleteInput.vue";
 import CustomSwitch from "./components/CustomSwitch.vue";
@@ -20,6 +25,7 @@ import TagShow from "./components/TagShow.vue";
 import AsyncRadio from "./components/AsyncRadio.vue";
 import AsyncCheckBox from "./components/AsyncCheckBox.vue";
 import FullScreenDyForm from "./components/FullScreenDyForm.vue";
+import { OptionProps } from "ant-design-vue/es/select";
 
 // 表单域组件类型
 export const componentsMap: Record<
@@ -74,9 +80,19 @@ export const componentsMap: Record<
 	Tag: {
 		component: TagShow,
 	},
+	Mentions: {
+		component: Mentions,
+	},
 };
 
-export type Options = Array<{ label: string; value: string | number }>;
+export type Options = Array<{
+	label: string;
+	value: string | number;
+	disabled?: boolean;
+	class?: string;
+	style?: Partial<CSSStyleDeclaration>;
+	payload?: Record<string, any>;
+}>;
 
 export type OptionsGetter = Options | (() => Options | Promise<Options>);
 
@@ -170,6 +186,13 @@ export type DyFormItem = {
 		closeIcon?: VNode | Slot;
 		color?: string;
 		icon?: VNode | Slot;
+		filterOption?:
+			| boolean
+			| ((inputValue: string, option: Options) => boolean);
+		status?: "success" | "error" | "default" | "processing" | "warning";
+		split?: string;
+		validateSearch?(text: string, props: MentionsProps): boolean;
+		prefix?: string | string[];
 	};
 	componentEvent?: {
 		[T: string]: Function;
