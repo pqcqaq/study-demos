@@ -15,9 +15,8 @@
 	<div class="change">
 		<a-button @click="changeModel" size="large">填充数据</a-button>
 		<a-button @click="changeSchema" size="large">修改Schema</a-button>
-		<a-button @click="handleTest" size="large" type="primary"
-			>测试Schema</a-button
-		>
+		<a-button @click="handleTest" size="large">测试Schema</a-button>
+		<a-button @click="testPopup" size="large">测试popup</a-button>
 	</div>
 </template>
 
@@ -25,6 +24,11 @@
 import DynamicForm from "../../../dynamic-form/src/DynamicForm.vue";
 import { Ref, ref } from "vue";
 import { DyForm, DyFormItem } from "../../../dynamic-form/src";
+import { useFullScreenDyForm } from "../../../dynamic-form/src";
+
+const testPopup = () => {
+	useFullScreenDyForm(test);
+};
 
 const formRef = ref<InstanceType<typeof DynamicForm> | null>(null);
 

@@ -13,12 +13,13 @@ import {
 
 import type { Rule } from "ant-design-vue/es/form/interface";
 import type { TimePickerProps, TreeSelectProps } from "ant-design-vue";
-import { Component, Slot, VNode, ref } from "vue";
+import { Component, Slot, VNode, createApp, ref } from "vue";
 import AutoCompleteInput from "./components/AutoCompleteInput.vue";
 import CustomSwitch from "./components/CustomSwitch.vue";
 import TagShow from "./components/TagShow.vue";
 import AsyncRadio from "./components/AsyncRadio.vue";
 import AsyncCheckBox from "./components/AsyncCheckBox.vue";
+import FullScreenDyForm from "./components/FullScreenDyForm.vue";
 
 // 表单域组件类型
 export const componentsMap: Record<
@@ -265,4 +266,30 @@ export function defineFormModel<T extends DyForm>(
 	}
 	Object.assign(model, init);
 	return ref(model);
+}
+
+export function useFullScreenDyForm(
+	schema: DyForm,
+	showBtns: {
+		clearAll: 0 | 1;
+		reset: 0 | 1;
+		submit: 0 | 1;
+	} = {
+		clearAll: 1,
+		reset: 1,
+		submit: 1,
+	}
+) {
+	const handleClose = () => {
+		app.unmount();
+		document.body.removeChild(div);
+	};
+	const div = document.createElement("div");
+	document.body.appendChild(div);
+	const app = createApp(FullScreenDyForm, {
+		schema,
+		showBtns,
+		onCancel: handleClose,
+	});
+	app.mount(div);
 }
