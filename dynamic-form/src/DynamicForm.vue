@@ -41,6 +41,7 @@
 							'dynamic-form-component'
 						"
 						v-on="{ ...item.componentEvent, onNull: () => {} }"
+						:disabled="props.disabled || loading"
 					/>
 				</a-form-item>
 				<div
@@ -69,7 +70,7 @@
 				style="display: flex; justify-content: center"
 			>
 				<a-button v-if="btnShow?.clearAll" @click="handleClear"
-					>重置(全部清空)</a-button
+					>清空</a-button
 				>
 				<a-button
 					v-if="btnShow?.reset"
@@ -82,6 +83,7 @@
 					type="primary"
 					style="margin-left: 50px"
 					@click="handleSubmit"
+					:loading="props.disabled || loading"
 					>提交</a-button
 				>
 			</div>
@@ -119,6 +121,8 @@ type dynamicType = {
 	registeToParent?: (selfIns: ComponentInternalInstance) => void;
 	unRegisteFromParent?: (selfIns: ComponentInternalInstance) => void;
 	disabled?: boolean;
+	onBeforeSubmit?: (formData: Record<string, any>) => void;
+	onSubmit?: (formData: Record<string, any>) => void;
 };
 
 const props = defineProps<dynamicType>();
@@ -254,6 +258,7 @@ const loading = ref(false);
 
 const handleSubmit = async () => {
 	loading.value = true;
+	props.onBeforeSubmit?.(formModel.value);
 	try {
 		const formData = await validateThenGetModel();
 		await props.schema.onSubmit?.(formData);
@@ -261,6 +266,7 @@ const handleSubmit = async () => {
 		console.error("在数据提交时发生错误：", error);
 	} finally {
 		loading.value = false;
+		props.onSubmit?.(formModel.value);
 	}
 };
 

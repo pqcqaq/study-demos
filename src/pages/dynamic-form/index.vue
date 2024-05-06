@@ -27,7 +27,12 @@ import { DyForm, DyFormItem, Options } from "../../../dynamic-form/src";
 import { useFullScreenDyForm } from "../../../dynamic-form/src";
 
 const testPopup = () => {
-	useFullScreenDyForm(test);
+	useFullScreenDyForm({
+		schema: test,
+		init: {
+			name: "test init",
+		},
+	});
 };
 
 const formRef = ref<InstanceType<typeof DynamicForm> | null>(null);
@@ -90,6 +95,7 @@ const test: DyForm = {
 				colon: false,
 				tooltip: "在这里输入姓名",
 			},
+			value: "123123",
 		},
 		// 班级
 		{
@@ -115,6 +121,7 @@ const test: DyForm = {
 				colon: false,
 				tooltip: "在这里输入班级",
 			},
+			value: "456456",
 		},
 		// 学号
 		{
@@ -140,6 +147,7 @@ const test: DyForm = {
 				colon: false,
 				tooltip: "在这里输入学号",
 			},
+			value: "789789",
 		},
 		//Mentions
 		{
@@ -181,6 +189,7 @@ const test: DyForm = {
 				colon: false,
 				tooltip: "在这里输入内容",
 			},
+			value: "@百里守约",
 		},
 	],
 	onSubmit: async (model) => {

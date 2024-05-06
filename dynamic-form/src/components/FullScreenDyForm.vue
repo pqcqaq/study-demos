@@ -6,19 +6,25 @@
 				v-model="formModel"
 				:show-btns="props.showBtns"
 				class="form"
+				:on-before-submit="() => (isLoading = true)"
+				:on-submit="() => (isLoading = false)"
 			/>
 			<div class="btns">
-				<a-button danger @click="() => props.onCancel()">取消</a-button>
+				<a-button danger @click="handleClose" :disabled="isLoading"
+					>取消</a-button
+				>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { DyForm } from "..";
 import DynamicForm from "../DynamicForm.vue";
 import AButton from "ant-design-vue/es/button";
+import { Modal } from "ant-design-vue";
+
 type propType = {
 	schema: DyForm;
 	showBtns: {
@@ -26,11 +32,41 @@ type propType = {
 		reset: 0 | 1;
 		submit: 0 | 1;
 	};
+	init: Record<string, any>;
 	onCancel: () => void;
+	allowDirectClose: boolean;
 };
 
 const props = defineProps<propType>();
 const formModel = ref<Record<string, any>>({});
+const isLoading = ref(false);
+
+onMounted(() => {
+	if (Object.keys(props.init).length > 0) {
+		formModel.value = { ...props.init };
+	}
+});
+
+const handleClose = () => {
+	if (props.allowDirectClose) {
+		props.onCancel();
+	} else {
+		// 确认框
+		Modal.confirm({
+			title: "确认关闭",
+			content: "关闭后将不会保存当前数据，是否继续？",
+			onOk: () => {
+				props.onCancel();
+			},
+			okText: "确认关闭",
+			okType: "primary",
+			okButtonProps: { danger: true },
+			cancelText: "返回",
+			zIndex: 10000,
+			centered: true,
+		});
+	}
+};
 </script>
 
 <style lang="scss" scoped>

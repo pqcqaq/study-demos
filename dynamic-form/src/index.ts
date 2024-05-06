@@ -290,18 +290,18 @@ export function defineFormModel<T extends DyForm>(
 	return ref(model);
 }
 
-export function useFullScreenDyForm(
-	schema: DyForm,
-	showBtns: {
+export type FormConfig = {
+	schema: DyForm;
+	showBtns?: {
 		clearAll: 0 | 1;
 		reset: 0 | 1;
 		submit: 0 | 1;
-	} = {
-		clearAll: 1,
-		reset: 1,
-		submit: 1,
-	}
-) {
+	};
+	init?: Record<string, any>;
+	allowDirectClose?: boolean;
+};
+
+export function useFullScreenDyForm(config: FormConfig) {
 	const handleClose = () => {
 		app.unmount();
 		document.body.removeChild(div);
@@ -309,9 +309,11 @@ export function useFullScreenDyForm(
 	const div = document.createElement("div");
 	document.body.appendChild(div);
 	const app = createApp(FullScreenDyForm, {
-		schema,
-		showBtns,
+		schema: config.schema,
+		showBtns: config.showBtns || { clearAll: 1, reset: 1, submit: 1 },
+		init: config.init || {},
 		onCancel: handleClose,
+		allowDirectClose: config.allowDirectClose || false,
 	});
 	app.mount(div);
 }
