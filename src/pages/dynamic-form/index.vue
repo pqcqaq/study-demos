@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 import DynamicForm from "../../../dynamic-form/src/DynamicForm.vue";
 import { Ref, ref } from "vue";
-import { DyForm, DyFormItem } from "../../../dynamic-form/src";
+import { DyForm, DyFormItem, Options } from "../../../dynamic-form/src";
 import { useFullScreenDyForm } from "../../../dynamic-form/src";
 
 const testPopup = () => {
@@ -33,12 +33,7 @@ const testPopup = () => {
 const formRef = ref<InstanceType<typeof DynamicForm> | null>(null);
 
 const getOption = async () => {
-	return new Promise<
-		{
-			label: string;
-			value: string | number;
-		}[]
-	>((resolve, reject) => {
+	return new Promise<Options>((resolve, reject) => {
 		setTimeout(() => {
 			// 模拟50%的概率失败
 			const random = Math.random();

@@ -76,11 +76,11 @@ export const componentsMap: Record<
 	},
 };
 
-type Options = Array<{ label: string; value: string | number }>;
+export type Options = Array<{ label: string; value: string | number }>;
 
-type OptionsGetter = Options | (() => Options | Promise<Options>);
+export type OptionsGetter = Options | (() => Options | Promise<Options>);
 
-type AutoInputList = {
+export type AutoInputList = {
 	label?: string;
 	value: string;
 };
