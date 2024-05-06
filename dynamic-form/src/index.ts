@@ -25,6 +25,7 @@ import TagShow from "./components/TagShow.vue";
 import AsyncRadio from "./components/AsyncRadio.vue";
 import AsyncCheckBox from "./components/AsyncCheckBox.vue";
 import FullScreenDyForm from "./components/FullScreenDyForm.vue";
+import CustomDivider from "./components/CustomDivider.vue";
 
 // 表单域组件类型
 export const componentsMap: Record<
@@ -81,6 +82,9 @@ export const componentsMap: Record<
 	},
 	Mentions: {
 		component: Mentions,
+	},
+	Divider: {
+		component: CustomDivider,
 	},
 };
 
@@ -192,6 +196,12 @@ export type DyFormItem = {
 		split?: string;
 		validateSearch?(text: string, props: MentionsProps): boolean;
 		prefix?: string | string[];
+		orientation?: "left" | "right" | "center";
+		orientationMargin?: number | string;
+		plain?: boolean;
+		dashed?: boolean;
+		danger?: boolean;
+		dividerText?: string;
 	};
 	componentEvent?: {
 		[T: string]: Function;

@@ -107,6 +107,7 @@ import type { DyForm, DyFormItem } from "./";
 import { componentsMap } from "./";
 import { FormInstance } from "ant-design-vue/es/form/Form";
 import { StyleValue } from "vue";
+import { message } from "ant-design-vue";
 
 type BtnsShow = {
 	clearAll: 0 | 1;
@@ -266,6 +267,7 @@ const handleSubmit = async () => {
 		await props.onSubmit?.(formModel.value);
 	} catch (error) {
 		console.error("在数据提交时发生错误：", error);
+		message.error("操作失败");
 	} finally {
 		loading.value = false;
 		props.onAfterSubmit?.(formModel.value);
@@ -301,10 +303,10 @@ watch(
 );
 
 watch(
-	() => formModel.value,
+	() => formModel.value["next"],
 	(newVal) => {
-		if (newVal["next"]) {
-			nextModel.value = newVal["next"];
+		if (newVal) {
+			nextModel.value = newVal;
 		}
 	}
 );

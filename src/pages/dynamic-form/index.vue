@@ -37,10 +37,10 @@ const testPopup = () => {
 			const data = await new Promise((resolve) => {
 				setTimeout(() => {
 					console.log("model", model);
-					resolve(null);
+					resolve(model);
 				}, 150);
 			});
-			message.success("提交成功" + data);
+			message.success("提交成功" + JSON.stringify(data));
 		},
 	});
 };
@@ -158,6 +158,17 @@ const test: DyForm = {
 				tooltip: "在这里输入学号",
 			},
 			value: "789789",
+		},
+		// devider
+		{
+			label: "",
+			field: "divider",
+			component: "Divider",
+			componentProps: {
+				orientation: "center",
+				orientationMargin: "10px",
+				dividerText: "下面是@用户组件",
+			},
 		},
 		//Mentions
 		{
