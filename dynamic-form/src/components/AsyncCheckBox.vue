@@ -19,6 +19,8 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
+import ACheckbox from "ant-design-vue/es/checkbox";
+import ACheckboxGroup from "ant-design-vue/es/checkbox/Group";
 
 type propsType = {
 	value: string[] | number[] | undefined;
@@ -45,7 +47,7 @@ const msg = ref("加载中....");
 const Realoptions = ref<Array<{ label: string; value: string | number }>>([]);
 
 const getData = async () => {
-    msg.value = "加载中....";
+	msg.value = "加载中....";
 	try {
 		if (props.options instanceof Function) {
 			const optionsPromise = await props.options();

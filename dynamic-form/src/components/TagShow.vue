@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+import ATag from "ant-design-vue/es/tag";
 type propsType = {
     value: string | undefined;
 };

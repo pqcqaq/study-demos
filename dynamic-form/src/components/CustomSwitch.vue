@@ -3,6 +3,7 @@
 </template>
 <script lang="ts" setup>
 import { computed } from "vue";
+import ASwitch from "ant-design-vue/es/switch";
 type propType = {
 	value: boolean | undefined;
 };

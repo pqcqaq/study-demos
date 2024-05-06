@@ -19,6 +19,8 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
+import ARadio from "ant-design-vue/es/radio";
+import ARadioGroup from "ant-design-vue/es/radio/Group";
 
 type propsType = {
 	value: string | number | undefined;

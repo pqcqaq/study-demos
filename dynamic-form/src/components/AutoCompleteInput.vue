@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, defineProps, defineEmits } from "vue";
+import AAutoComplete from "ant-design-vue";
 
 type AutoInputList = {
 	label?: string;
