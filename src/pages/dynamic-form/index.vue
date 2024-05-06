@@ -4,8 +4,12 @@
 			ref="formRef"
 			:schema="schema"
 			v-model="model"
-			:showBtns="{ clearAll: 1, reset: 1, submit: 1 }"
 			class="custom"
+			:show-btns="{
+				reset: 1,
+				clearAll: 1,
+				submit: 1,
+			}"
 		/>
 	</div>
 	<div class="change">
@@ -15,9 +19,9 @@
 </template>
 
 <script lang="ts" setup>
-import DynamicForm from "./cpns/DynamicForm.vue";
-import { ref, watch } from "vue";
-import { DyForm } from "./types/DynamicForm";
+import DynamicForm from "../../../dynamic-form/src/DynamicForm.vue";
+import { Ref, ref, watch } from "vue";
+import { DyForm, DyFormItem } from "../../../dynamic-form/src";
 
 const formRef = ref<InstanceType<typeof DynamicForm> | null>(null);
 
@@ -57,7 +61,7 @@ const getOption = async () => {
 	});
 };
 
-const schema = ref<DyForm>({
+const schema: Ref<DyForm> = ref<DyForm>({
 	title: "dynamicForm",
 	formProps: {
 		labelCol: { span: 4 },
@@ -90,7 +94,7 @@ const schema = ref<DyForm>({
 				tooltip: "在这里输入姓名",
 			},
 			value: "百里守约",
-			next: (model: any) => {
+			next: (model: any): DyForm | undefined => {
 				if (model == "百里守约") {
 					return {
 						items: [
@@ -150,7 +154,7 @@ const schema = ref<DyForm>({
 				hidden: false,
 			},
 			value: 1,
-			next: (model) => {
+			next: (model): DyForm | undefined => {
 				if (model == 1) {
 					return {
 						items: [
@@ -355,7 +359,7 @@ const schema = ref<DyForm>({
 				unCheckedChildren: "关",
 			},
 			value: true,
-			next: (model) => {
+			next: (model): DyForm | undefined => {
 				if (model) {
 					return {
 						className: "custom-form one-form",
@@ -382,7 +386,7 @@ const schema = ref<DyForm>({
 									valueFormat: "HH:mm:ss",
 									tooltips: ["选择时间"],
 								},
-								next: (model) => {
+								next: (model): DyForm | undefined => {
 									if (model > "06:00:00") {
 										return {
 											className: "custom-form",
@@ -410,7 +414,9 @@ const schema = ref<DyForm>({
 														valueFormat: "HH:mm:ss",
 														tooltips: ["选择时间"],
 													},
-													next: (model) => {
+													next: (
+														model
+													): DyForm | undefined => {
 														if (
 															model > "18:00:00"
 														) {
@@ -482,7 +488,7 @@ const schema = ref<DyForm>({
 					100: "100%",
 				},
 			},
-			next: (model) => {
+			next: (model): DyForm | undefined => {
 				if (((model as number) || 0) > 50) {
 					return {
 						items: [
@@ -608,22 +614,20 @@ const schema = ref<DyForm>({
 			field: "autoCompleteColor",
 			component: "AutoComplete",
 			componentProps: {
-				fetchList: () => {
-					return [
-						{
-							value: "红色",
-						},
-						{
-							value: "绿色",
-						},
-						{
-							value: "蓝色",
-						},
-						{
-							value: "黄色",
-						},
-					];
-				},
+				fetchList: [
+					{
+						value: "红色",
+					},
+					{
+						value: "绿色",
+					},
+					{
+						value: "蓝色",
+					},
+					{
+						value: "黄色",
+					},
+				],
 				enableSplit: true,
 				splitWord: "，",
 				title: "颜色",
@@ -641,7 +645,7 @@ const schema = ref<DyForm>({
 					},
 				],
 			},
-			next: (model) => {
+			next: (model): DyForm | undefined => {
 				if (((model as string) || "").includes("蓝色")) {
 					return {
 						items: [
@@ -734,7 +738,7 @@ const changeModel = () => {
 };
 
 const changeSchema = () => {
-	schema.value.items = [
+	const items: DyFormItem[] = [
 		{
 			label: "姓名",
 			field: "name",
@@ -752,11 +756,10 @@ const changeSchema = () => {
 					{
 						required: true,
 						message: "请输入姓名",
+						type: "string",
 						trigger: "blur",
 					},
 				],
-				colon: false,
-				tooltip: "在这里输入姓名",
 			},
 			value: "百里守约",
 			next: (model: any) => {
@@ -771,9 +774,6 @@ const changeSchema = () => {
 									allowClear: true,
 									showCount: true,
 									maxlength: 80,
-									style: {
-										width: "350px",
-									},
 								},
 								formItemProps: {
 									rules: [
@@ -785,17 +785,41 @@ const changeSchema = () => {
 											enum: ["A", "B", "C", "D", "E"],
 										},
 									],
-									style: {
-										marginTop: "10px",
+								},
+								componentEvent: {
+									change: (value: string) => {
+										console.log("change", value);
 									},
 								},
 							},
 						],
+						formEvent: {
+							submit: () => {
+								console.log("submit");
+							},
+						},
 					};
 				}
 			},
 		},
 	];
+	schema.value = {
+		title: "dynamicForm",
+		formProps: {
+			labelCol: { span: 4 },
+			wrapperCol: { span: 20 },
+			hideRequiredMark: false,
+		},
+		items,
+		onSubmit: async (model) => {
+			await new Promise((resolve) => {
+				setTimeout(() => {
+					console.log("model", model);
+					resolve(null);
+				}, 1000);
+			});
+		},
+	};
 };
 
 watch(

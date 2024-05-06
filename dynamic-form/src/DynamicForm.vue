@@ -14,25 +14,37 @@
 		<a-form
 			ref="formRef"
 			:model="formModel"
-			v-bind="$attrs && props.schema.formProps"
+			v-bind="{ ...$attrs, ...props.schema.formProps }"
 			:disabled="loading || props.disabled"
 			:class="props.schema.className || 'dynamic-form'"
+			v-on="{ ...props.schema.formEvent, onNull: () => {} }"
 		>
-			<a-form-item
-				:name="item.field"
-				:label="item.label"
-				v-for="item in props.schema.items"
-				:key="item.field"
-				v-bind="item.formItemProps"
-				:class="item.formItemProps?.className || 'dynamic-form-item'"
-			>
-				<component
-					:is="componentsMap[item.component].component"
-					v-bind="item.componentProps"
-					v-model:value="formModel[item.field]"
-					:class="item.componentProps?.className || 'dynamic-form-component'"
-				/>
-				<div class="subForms" v-if="hasNext">
+			<div class="items" v-for="item in props.schema.items">
+				<a-form-item
+					:name="item.field"
+					:label="item.label"
+					:key="item.field"
+					v-bind="item.formItemProps"
+					:class="
+						item.formItemProps?.className || 'dynamic-form-item'
+					"
+				>
+					<component
+						:is="componentsMap[item.component].component"
+						v-bind="item.componentProps"
+						v-model:value="formModel[item.field]"
+						:class="
+							item.componentProps?.className ||
+							'dynamic-form-component'
+						"
+						v-on="{ ...item.componentEvent, onNull: () => {} }"
+					/>
+				</a-form-item>
+				<div
+					class="subForms"
+					v-if="hasNext"
+					:style="(item.nextFormStyle || {}) as StyleValue"
+				>
 					<DynamicForm
 						v-if="showNext(formModel[item.field], item)"
 						:schema="nextFormSchema(formModel[item.field], item)"
@@ -40,12 +52,17 @@
 						:registe-to-parent="register"
 						:un-registe-from-parent="unRegister"
 						:disabled="props.disabled || loading"
-						:show-btns="false"
+						:show-btns="{
+							clearAll: 0,
+							reset: 0,
+							submit: 0,
+						}"
 					/>
 				</div>
-			</a-form-item>
+			</div>
+
 			<div
-				v-if="props.showBtns"
+				v-if="!!btnShow"
 				style="display: flex; justify-content: center"
 			>
 				<a-button v-if="btnShow?.clearAll" @click="handleClear"
@@ -81,9 +98,10 @@ import {
 	getCurrentInstance,
 	ComponentInternalInstance,
 } from "vue";
-import type { DyForm, DyFormItem } from "../types/DynamicForm";
-import { componentsMap } from "../types/DynamicForm";
+import type { DyForm, DyFormItem } from "./";
+import { componentsMap } from "./";
 import { FormInstance } from "ant-design-vue/es/form/Form";
+import { StyleValue } from "vue";
 
 type BtnsShow = {
 	clearAll: 0 | 1;
@@ -102,12 +120,23 @@ type dynamicType = {
 
 const props = defineProps<dynamicType>();
 const btnShow = computed(() => {
-	if (typeof props.showBtns === "boolean") {
+	if (!props.showBtns) {
 		return {
 			clearAll: 0,
 			reset: 1,
 			submit: 1,
 		};
+	}
+	if (typeof props.showBtns === "boolean") {
+		if (props.showBtns) {
+			return {
+				clearAll: 0,
+				reset: 1,
+				submit: 1,
+			};
+		} else {
+			return null;
+		}
 	}
 	return props.showBtns;
 });
@@ -269,6 +298,18 @@ watch(
 	}
 );
 
+// watch(
+// 	() => props.schema,
+// 	(newVal) => {
+// 		initForm();
+// 		hasNext.value = newVal.items.some((item) => item.next);
+// 	},
+// 	{
+// 		deep: true,
+// 		immediate: true,
+// 	}
+// );
+
 // 暴露方法
 defineExpose({
 	validateFields,
@@ -282,7 +323,7 @@ defineExpose({
 	font-weight: bold;
 }
 .subForms {
-	margin-left: 0;
+	margin-left: 24px;
 	width: 100%;
 }
 </style>

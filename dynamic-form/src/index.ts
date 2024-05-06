@@ -14,11 +14,11 @@ import {
 import type { Rule } from "ant-design-vue/es/form/interface";
 import type { TimePickerProps, TreeSelectProps } from "ant-design-vue";
 import { Component, Slot, VNode, ref } from "vue";
-import AutoCompleteInput from "../cpns/components/AutoCompleteInput.vue";
-import CustomSwitch from "../cpns/components/CustomSwitch.vue";
-import TagShow from "../cpns/components/TagShow.vue";
-import AsyncRadio from "../cpns/components/AsyncRadio.vue";
-import AsyncCheckBox from "../cpns/components/AsyncCheckBox.vue";
+import AutoCompleteInput from "./components/AutoCompleteInput.vue";
+import CustomSwitch from "./components/CustomSwitch.vue";
+import TagShow from "./components/TagShow.vue";
+import AsyncRadio from "./components/AsyncRadio.vue";
+import AsyncCheckBox from "./components/AsyncCheckBox.vue";
 
 // 表单域组件类型
 export const componentsMap: Record<
@@ -170,6 +170,9 @@ export type DyFormItem = {
 		color?: string;
 		icon?: VNode | Slot;
 	};
+	componentEvent?: {
+		[T: string]: Function;
+	};
 	formItemProps?: {
 		className?: string;
 		label?: string;
@@ -210,6 +213,7 @@ export type DyFormItem = {
 			| number[]
 			| File[]
 	) => DyForm | undefined | null;
+	nextFormStyle?: Partial<CSSStyleDeclaration>;
 };
 
 export type DyForm = {
@@ -232,6 +236,12 @@ export type DyForm = {
 		validateOnRuleChange?: boolean;
 		validateTrigger?: string | string[];
 		wrapperCol?: { span: number; offset?: number };
+	};
+	formEvent?: {
+		finish?: () => void;
+		finishFailed?: () => void;
+		submit?: () => void;
+		validate?: () => void;
 	};
 	className?: string;
 };
