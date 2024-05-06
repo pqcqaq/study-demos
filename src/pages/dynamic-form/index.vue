@@ -61,6 +61,77 @@ const getOption = async () => {
 	});
 };
 
+const test: DyForm = {
+	title: "dynamicForm",
+	items: [
+		// 姓名班级学号
+		{
+			label: "姓名",
+			field: "name",
+			component: "Text",
+			componentProps: {
+				allowClear: true,
+				showCount: true,
+				maxlength: 20,
+				style: {
+					width: "400px",
+				},
+			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请输入姓名",
+						trigger: "blur",
+					},
+				],
+				colon: false,
+				tooltip: "在这里输入姓名",
+			},
+		},
+		// 班级
+		{
+			label: "班级",
+			field: "class",
+			component: "Text",
+			componentProps: {
+				allowClear: true,
+				showCount: true,
+				maxlength: 20,
+				style: {
+					width: "400px",
+				},
+			},
+			formItemProps: {
+				rules: [],
+				colon: false,
+				tooltip: "在这里输入班级",
+			},
+		},
+		// 学号
+		{
+			label: "学号",
+			field: "studentId",
+			component: "Text",
+			componentProps: {
+				allowClear: true,
+				showCount: true,
+				maxlength: 20,
+				style: {
+					width: "400px",
+				},
+			},
+			formItemProps: {
+				rules: [],
+				colon: false,
+				tooltip: "在这里输入学号",
+			},
+		},
+	],
+};
+
+console.log("test", test);
+
 const schema: Ref<DyForm> = ref<DyForm>({
 	title: "dynamicForm",
 	formProps: {
