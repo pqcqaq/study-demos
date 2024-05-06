@@ -5,6 +5,7 @@
 			:schema="schema"
 			v-model="model"
 			:showBtns="{ clearAll: 1, reset: 1, submit: 1 }"
+			class="custom"
 		/>
 	</div>
 	<div class="change">
@@ -20,43 +21,41 @@ import { DyForm } from "./types/DynamicForm";
 
 const formRef = ref<InstanceType<typeof DynamicForm> | null>(null);
 
-	const getOption = async () => {
-    return new Promise<
-        {
-            label: string;
-            value: string | number;
-        }[]
-    >((resolve, reject) => {
-        setTimeout(() => {
-            // 模拟50%的概率失败
-            const random = Math.random();
-            if (random < 0.3) {
-                resolve([
-                    {
-                        value: "111111",
-                        label: "111111",
-                    },
-                    {
-                        value: "222222",
-                        label: "222222",
-                    },
-                    {
-                        value: "333333",
-                        label: "333333",
-                    },
-                    {
-                        value: "444444",
-                        label: "444444",
-                    },
-                ]);
-            } else {
-                reject("Failed to get options.");
-            }
-        }, 200);
-    });
+const getOption = async () => {
+	return new Promise<
+		{
+			label: string;
+			value: string | number;
+		}[]
+	>((resolve, reject) => {
+		setTimeout(() => {
+			// 模拟50%的概率失败
+			const random = Math.random();
+			if (random < 0.3) {
+				resolve([
+					{
+						value: "111111",
+						label: "111111",
+					},
+					{
+						value: "222222",
+						label: "222222",
+					},
+					{
+						value: "333333",
+						label: "333333",
+					},
+					{
+						value: "444444",
+						label: "444444",
+					},
+				]);
+			} else {
+				reject("Failed to get options.");
+			}
+		}, 200);
+	});
 };
-
-
 
 const schema = ref<DyForm>({
 	title: "dynamicForm",
@@ -120,6 +119,7 @@ const schema = ref<DyForm>({
 									style: {
 										marginTop: "10px",
 									},
+									labelCol: { span: 3 },
 								},
 							},
 						],
@@ -298,7 +298,7 @@ const schema = ref<DyForm>({
 				],
 			},
 		},
-		// async checkbox 
+		// async checkbox
 		{
 			label: "异步多选",
 			field: "async-checkbox",
@@ -358,6 +358,7 @@ const schema = ref<DyForm>({
 			next: (model) => {
 				if (model) {
 					return {
+						className: "custom-form one-form",
 						items: [
 							{
 								label: "开启时间",
@@ -371,6 +372,10 @@ const schema = ref<DyForm>({
 											trigger: "blur",
 										},
 									],
+									style: {
+										display: "inline-block",
+									},
+									className: "one-form-items",
 								},
 								componentProps: {
 									format: "HH:mm:ss",
@@ -380,6 +385,7 @@ const schema = ref<DyForm>({
 								next: (model) => {
 									if (model > "06:00:00") {
 										return {
+											className: "custom-form",
 											items: [
 												{
 													label: "关闭时间",
@@ -394,6 +400,10 @@ const schema = ref<DyForm>({
 																trigger: "blur",
 															},
 														],
+														style: {
+															display:
+																"inline-block",
+														},
 													},
 													componentProps: {
 														format: "HH:mm:ss",
@@ -405,6 +415,8 @@ const schema = ref<DyForm>({
 															model > "18:00:00"
 														) {
 															return {
+																className:
+																	"custom-form",
 																items: [
 																	{
 																		label: "关闭原因",
@@ -436,8 +448,8 @@ const schema = ref<DyForm>({
 																					},
 																				],
 																				style: {
-																					marginTop:
-																						"10px",
+																					display:
+																						"inline-block",
 																				},
 																			},
 																	},
@@ -804,5 +816,19 @@ watch(
 	display: flex;
 	justify-content: center;
 	gap: 20px;
+}
+
+.custom :deep(.custom-form) {
+	border: 1px solid #f0f0f0;
+}
+
+.custom :deep(.one-form) {
+	width: 500px;
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
+	.one-form-items {
+		display: flex;
+	}
 }
 </style>

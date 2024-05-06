@@ -77,9 +77,7 @@ export const componentsMap: Record<
 
 type Options = Array<{ label: string; value: string | number }>;
 
-type OptionsGetter =
-	| Options
-	| (() => Options | Promise<Options>);
+type OptionsGetter = Options | (() => Options | Promise<Options>);
 
 type AutoInputList = {
 	label?: string;
@@ -92,6 +90,8 @@ export type DyFormItem = {
 	component: keyof typeof componentsMap;
 	componentProps?: {
 		style?: Partial<CSSStyleDeclaration>;
+		className?: string;
+		type?: string;
 		allowClear?: boolean;
 		showCount?: boolean;
 		maxlength?: number;
@@ -171,6 +171,7 @@ export type DyFormItem = {
 		icon?: VNode | Slot;
 	};
 	formItemProps?: {
+		className?: string;
 		label?: string;
 		rules?: Rule[];
 		style?: Partial<CSSStyleDeclaration>;
@@ -232,6 +233,7 @@ export type DyForm = {
 		validateTrigger?: string | string[];
 		wrapperCol?: { span: number; offset?: number };
 	};
+	className?: string;
 };
 
 // 计算ref的值的类型

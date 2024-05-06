@@ -16,6 +16,7 @@
 			:model="formModel"
 			v-bind="$attrs && props.schema.formProps"
 			:disabled="loading || props.disabled"
+			:class="props.schema.className || 'dynamic-form'"
 		>
 			<a-form-item
 				:name="item.field"
@@ -23,11 +24,13 @@
 				v-for="item in props.schema.items"
 				:key="item.field"
 				v-bind="item.formItemProps"
+				:class="item.formItemProps?.className || 'dynamic-form-item'"
 			>
 				<component
 					:is="componentsMap[item.component].component"
 					v-bind="item.componentProps"
 					v-model:value="formModel[item.field]"
+					:class="item.componentProps?.className || 'dynamic-form-component'"
 				/>
 				<div class="subForms" v-if="hasNext">
 					<DynamicForm
