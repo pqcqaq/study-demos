@@ -25,12 +25,22 @@ import DynamicForm from "../../../dynamic-form/src/DynamicForm.vue";
 import { Ref, ref } from "vue";
 import { DyForm, DyFormItem, Options } from "../../../dynamic-form/src";
 import { useFullScreenDyForm } from "../../../dynamic-form/src";
+import { message } from "ant-design-vue";
 
 const testPopup = () => {
 	useFullScreenDyForm({
 		schema: test,
 		init: {
 			name: "test init",
+		},
+		submit: async (model) => {
+			const data = await new Promise((resolve) => {
+				setTimeout(() => {
+					console.log("model", model);
+					resolve(null);
+				}, 150);
+			});
+			message.success("提交成功" + data);
 		},
 	});
 };
@@ -192,14 +202,6 @@ const test: DyForm = {
 			value: "@百里守约",
 		},
 	],
-	onSubmit: async (model) => {
-		await new Promise((resolve) => {
-			setTimeout(() => {
-				console.log("model", model);
-				resolve(null);
-			}, 1000);
-		});
-	},
 };
 
 console.log("test", test);

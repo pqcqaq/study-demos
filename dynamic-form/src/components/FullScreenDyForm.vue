@@ -6,8 +6,9 @@
 				v-model="formModel"
 				:show-btns="props.showBtns"
 				class="form"
-				:on-before-submit="() => (isLoading = true)"
-				:on-submit="() => (isLoading = false)"
+				:on-before-submit="handleOnBeforeSubmit"
+                :on-submit="props.onSubmit"
+				:on-after-submit="handleOnAfterSubmit"
 			/>
 			<div class="btns">
 				<a-button danger @click="handleClose" :disabled="isLoading"
@@ -34,7 +35,8 @@ type propType = {
 	};
 	init: Record<string, any>;
 	onCancel: () => void;
-	allowDirectClose: boolean;
+    allowDirectClose: boolean;
+    onSubmit?: (formData: Record<string, any>) => void;
 };
 
 const props = defineProps<propType>();
@@ -66,6 +68,14 @@ const handleClose = () => {
 			centered: true,
 		});
 	}
+};
+
+const handleOnBeforeSubmit = () => {
+    isLoading.value = true;
+};
+
+const handleOnAfterSubmit = () => {
+    isLoading.value = false;
 };
 </script>
 

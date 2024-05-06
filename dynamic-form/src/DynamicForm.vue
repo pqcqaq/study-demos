@@ -5,7 +5,7 @@
 			style="
 				display: flex;
 				justify-content: center;
-				margin-bottom: 10px;
+				margin-bottom: 15px;
 				align-items: center;
 			"
 		>
@@ -123,6 +123,7 @@ type dynamicType = {
 	disabled?: boolean;
 	onBeforeSubmit?: (formData: Record<string, any>) => void;
 	onSubmit?: (formData: Record<string, any>) => void;
+	onAfterSubmit?: (formData: Record<string, any>) => void;
 };
 
 const props = defineProps<dynamicType>();
@@ -262,11 +263,12 @@ const handleSubmit = async () => {
 	try {
 		const formData = await validateThenGetModel();
 		await props.schema.onSubmit?.(formData);
+		await props.onSubmit?.(formModel.value);
 	} catch (error) {
 		console.error("在数据提交时发生错误：", error);
 	} finally {
 		loading.value = false;
-		props.onSubmit?.(formModel.value);
+		props.onAfterSubmit?.(formModel.value);
 	}
 };
 

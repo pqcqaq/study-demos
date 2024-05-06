@@ -299,6 +299,7 @@ export type FormConfig = {
 	};
 	init?: Record<string, any>;
 	allowDirectClose?: boolean;
+	submit?: (values: Record<string, any>) => void;
 };
 
 export function useFullScreenDyForm(config: FormConfig) {
@@ -314,6 +315,7 @@ export function useFullScreenDyForm(config: FormConfig) {
 		init: config.init || {},
 		onCancel: handleClose,
 		allowDirectClose: config.allowDirectClose || false,
+		onSubmit: config.submit,
 	});
 	app.mount(div);
 }
