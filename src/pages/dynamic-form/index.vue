@@ -13,15 +13,17 @@
 		/>
 	</div>
 	<div class="change">
-		<a-button @click="changeModel">change</a-button>
-		<a-button @click="changeSchema">changeSchema</a-button>
-		<a-button @click="handleTest">Test</a-button>
+		<a-button @click="changeModel" size="large">填充数据</a-button>
+		<a-button @click="changeSchema" size="large">修改Schema</a-button>
+		<a-button @click="handleTest" size="large" type="primary"
+			>测试Schema</a-button
+		>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import DynamicForm from "../../../dynamic-form/src/DynamicForm.vue";
-import { Ref, ref, watch } from "vue";
+import { Ref, ref } from "vue";
 import { DyForm, DyFormItem } from "../../../dynamic-form/src";
 
 const formRef = ref<InstanceType<typeof DynamicForm> | null>(null);
@@ -104,7 +106,13 @@ const test: DyForm = {
 				},
 			},
 			formItemProps: {
-				rules: [],
+				rules: [
+					{
+						required: true,
+						message: "请输入班级",
+						trigger: "blur",
+					},
+				],
 				colon: false,
 				tooltip: "在这里输入班级",
 			},
@@ -123,7 +131,13 @@ const test: DyForm = {
 				},
 			},
 			formItemProps: {
-				rules: [],
+				rules: [
+					{
+						required: true,
+						message: "请输入学号",
+						trigger: "blur",
+					},
+				],
 				colon: false,
 				tooltip: "在这里输入学号",
 			},
@@ -141,7 +155,7 @@ const test: DyForm = {
 
 console.log("test", test);
 
-const schema: Ref<DyForm> = ref<DyForm>({
+const formSchema: DyForm = {
 	title: "dynamicForm",
 	formProps: {
 		labelCol: { span: 4 },
@@ -783,7 +797,9 @@ const schema: Ref<DyForm> = ref<DyForm>({
 			}, 1000);
 		});
 	},
-});
+};
+
+const schema: Ref<DyForm> = ref<DyForm>(formSchema) as any;
 
 const model = ref<Record<string, any>>({
 	name: "百里守约",
@@ -906,16 +922,16 @@ const handleTest = async () => {
 	schema.value = test;
 };
 
-watch(
-	() => model.value,
-	(newVal) => {
-		console.log("formModelValue", JSON.stringify(newVal));
-	},
-	{
-		deep: true,
-		immediate: true,
-	}
-);
+// watch(
+// 	() => model.value,
+// 	(newVal) => {
+// 		console.log("formModelValue", JSON.stringify(newVal));
+// 	},
+// 	{
+// 		deep: true,
+// 		immediate: true,
+// 	}
+// );
 </script>
 
 <style lang="scss" scoped>
@@ -932,7 +948,7 @@ watch(
 
 .custom :deep(.one-form) {
 	width: 500px;
-	display: flex !important;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	.one-form-items {
