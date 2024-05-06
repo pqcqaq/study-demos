@@ -25,7 +25,6 @@ import TagShow from "./components/TagShow.vue";
 import AsyncRadio from "./components/AsyncRadio.vue";
 import AsyncCheckBox from "./components/AsyncCheckBox.vue";
 import FullScreenDyForm from "./components/FullScreenDyForm.vue";
-import { OptionProps } from "ant-design-vue/es/select";
 
 // 表单域组件类型
 export const componentsMap: Record<
