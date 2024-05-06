@@ -15,6 +15,7 @@
 	<div class="change">
 		<a-button @click="changeModel">change</a-button>
 		<a-button @click="changeSchema">changeSchema</a-button>
+		<a-button @click="handleTest">Test</a-button>
 	</div>
 </template>
 
@@ -891,6 +892,10 @@ const changeSchema = () => {
 			});
 		},
 	};
+};
+
+const handleTest = async () => {
+	schema.value = test;
 };
 
 watch(
