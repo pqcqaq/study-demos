@@ -129,6 +129,14 @@ const test: DyForm = {
 			},
 		},
 	],
+	onSubmit: async (model) => {
+		await new Promise((resolve) => {
+			setTimeout(() => {
+				console.log("model", model);
+				resolve(null);
+			}, 1000);
+		});
+	},
 };
 
 console.log("test", test);
