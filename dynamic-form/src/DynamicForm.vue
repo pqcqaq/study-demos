@@ -31,7 +31,10 @@
 				>
 					<component
 						:is="componentsMap[item.component].component"
-						v-bind="item.componentProps"
+						v-bind="{
+							...item.componentProps,
+							...componentsMap[item.component].defaultProps,
+						}"
 						v-model:value="formModel[item.field]"
 						:class="
 							item.componentProps?.className ||

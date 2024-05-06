@@ -31,7 +31,7 @@ export const componentsMap: Record<
 	string,
 	{
 		component: Component;
-		props?: Record<string, any>;
+		defaultProps?: Record<string, any>;
 	}
 > = {
 	Text: {
