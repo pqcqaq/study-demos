@@ -29,6 +29,7 @@ import FullScreenDyForm from "./components/FullScreenDyForm.vue";
 import CustomDivider from "./components/CustomDivider.vue";
 import CustomAvatarGroup from "./components/CustomAvatarGroup.vue";
 import CustomUpload from "./components/CustomUpload.vue";
+import { Dayjs } from "dayjs";
 
 // 表单域组件类型
 export const componentsMap: Record<
@@ -169,7 +170,7 @@ export type DyFormItem = {
 		checkedChildren?: string;
 		checkedValue?: string | number | boolean;
 		loading?: boolean;
-		size?: "default" | "small" | "large";
+		size?: "default" | "small" | "large" | "middle";
 		unCheckedChildren?: string;
 		unCheckedValue?: string | number | boolean;
 		maxCount?: number;
@@ -253,6 +254,11 @@ export type DyFormItem = {
 		uploadProps?: UploadProps;
 		uploadEvent?: UploadEvents;
 		uploadType?: UploadType;
+		disabledDate?: (currentDate: Dayjs) => boolean;
+		mode?: "time" | "date" | "month" | "year" | "decade";
+		picker?: "date" | "week" | "month" | "quarter" | "year";
+		popupStyle?: Partial<CSSStyleDeclaration>;
+		presets?: { label: Slot; value: Dayjs }[];
 	};
 	componentEvent?: {
 		[T: string]: Function;
