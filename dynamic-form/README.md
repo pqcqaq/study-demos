@@ -11,6 +11,209 @@
 - 本项目依赖于antd的表单组件
 - 此仓库不作为独立的依赖进行导入，你可以克隆后添加到自己的项目中进行使用
 
+## 案例
+
+- 某商城后台管理系统，使用该动态表单组件
+
+- schema定义：
+
+- ```ts
+    import { DyForm, DyFormItem } from "@/components/dynamic-form/src"
+    
+    let qspassword = ""
+    
+    const commonComponentProps = {
+      allowClear: true,
+      showCount: true,
+      maxlength: 30
+    }
+    
+    const passwordAndConfirmPassword: DyFormItem[] = [
+      {
+        label: "密码",
+        field: "password",
+        component: "Password",
+        formItemProps: {
+          rules: [
+            { required: true, message: "请输入密码" },
+            {
+              min: 5,
+              max: 30,
+              message: "密码长度为5-30位"
+            },
+            {
+              validator: (_rule: any, value: any) => {
+                qspassword = value
+                return Promise.resolve()
+              }
+            }
+          ]
+        },
+        componentProps: commonComponentProps
+      },
+      {
+        label: "确认密码",
+        field: "confirmPassword",
+        component: "Password",
+        formItemProps: {
+          rules: [
+            { required: true, message: "请输入确认密码" },
+            {
+              min: 5,
+              max: 30,
+              message: "密码长度为5-30位"
+            },
+            {
+              validator: (_rule: any, value: any) => {
+                if (value !== qspassword) {
+                  return Promise.reject("两次输入密码不一致")
+                }
+                return Promise.resolve()
+              }
+            }
+          ]
+        },
+        componentProps: commonComponentProps
+      }
+    ]
+    
+    const usernameAndphone: DyFormItem[] = [
+      {
+        label: "用户名",
+        field: "username",
+        component: "Text",
+        formItemProps: {
+          rules: [{ required: true, message: "请输入用户名", min: 5, max: 30 }],
+          style: { width: "360px" }
+        },
+        componentProps: commonComponentProps
+      },
+      {
+        label: "手机号",
+        field: "phone",
+        component: "Text",
+        formItemProps: {
+          rules: [{ required: true, message: "请输入手机号", min: 11, max: 11 }]
+        },
+        componentProps: commonComponentProps
+      }
+    ]
+    
+    const avatar: DyFormItem = {
+      label: "",
+      field: "avatar",
+      component: "ImageSelector",
+      formItemProps: {
+        rules: [{ required: true, message: "请选择头像" }]
+      },
+      componentProps: {
+        fileType: "USER",
+        title: "选择头像"
+      }
+    }
+    
+    const role: DyFormItem = {
+      label: "权限",
+      field: "roles",
+      component: "Checkbox",
+      componentProps: {
+        options: [
+          { label: "客服", value: "SERVER" },
+          { label: "管理员", value: "ADMIN" }
+        ]
+      },
+      value: ["SERVER"],
+      formItemProps: {
+        rules: [
+          {
+            validator: (_rule: any, value: any) => {
+              if (value.length === 0) {
+                return Promise.reject("请选择权限")
+              }
+              if (value.length > 1) {
+                return Promise.reject("只能选择一个权限")
+              }
+              return Promise.resolve()
+            }
+          }
+        ]
+      }
+    }
+    
+    export const addUserSchema: DyForm = {
+      title: "创建用户",
+      formProps: {
+        labelCol: { span: 5 }
+      },
+      items: [avatar, ...usernameAndphone, ...passwordAndConfirmPassword, role]
+    }
+    
+    export const editUserSchema: DyForm = {
+      title: "编辑用户",
+      formProps: {
+        labelCol: { span: 5 }
+      },
+      items: [avatar, ...usernameAndphone, role]
+    }
+    
+    export const resetPasswordSchema: DyForm = {
+      title: "重置密码",
+      formProps: {
+        labelCol: { span: 6 }
+      },
+      items: [...passwordAndConfirmPassword]
+    }
+    
+    ```
+
+- 表单使用：
+
+- ```ts
+    const handleClickLeftBtn = () => {
+      const initData = {
+        roles: ["SERVER"]
+      }
+      useFullScreenDyForm({
+        schema: addUserSchema,
+        init: initData,
+        submit: (formData, close) => {
+          upsertUserApi({
+            id: "",
+            username: formData.username,
+            password: formData.password,
+            phone: formData.phone,
+            avatarId: formData.avatar.id,
+            role: formData.roles[0]
+          })
+            .then((res) => {
+              close()
+              ElMessage.success(res.msg)
+              fetchData()
+            })
+            .catch((err) => {
+              console.log(err)
+              ElMessage.error("操作失败")
+            })
+        },
+        style: {
+          // 边框
+          border: "2px solid #90a1ff",
+          backgroundColor: "rgb(244, 247, 255)"
+        }
+      })
+    }
+    ```
+
+- 效果图：
+
+- ![](https://cdn.jsdelivr.net/gh/pqcqaq/imageSource/upload/202405071751400.png)
+
+- ![](https://cdn.jsdelivr.net/gh/pqcqaq/imageSource/upload/202405071752313.png)
+
+- ![](https://cdn.jsdelivr.net/gh/pqcqaq/imageSource/upload/202405071752941.png)
+
+    
+
 ## 使用
 
 - 在使用之前，请确保你会使用ts，且编辑器已经配置好ts环境，以获得完整的ts类型支持。
