@@ -1,6 +1,12 @@
 <template>
 	<div class="fullscreen">
-		<div class="full-form" :style="props.style">
+		<div
+			class="full-form"
+			v-move
+			:style="{
+				...props.style,
+			}"
+		>
 			<DynamicForm
 				:schema="props.schema"
 				v-model="formModel"
@@ -20,12 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { CSSProperties, Directive, onMounted, ref } from "vue";
 import { DyForm } from "..";
 import DynamicForm from "../DynamicForm.vue";
 import AButton from "ant-design-vue/es/button";
 import { Modal } from "ant-design-vue";
-import { StyleValue } from "vue";
 
 type propType = {
 	schema: DyForm;
@@ -38,7 +43,8 @@ type propType = {
 	onCancel: () => void;
 	allowDirectClose: boolean;
 	onSubmit?: (formData: Record<string, any>) => void;
-	style: StyleValue;
+	style: CSSProperties;
+	draggable?: boolean;
 };
 
 const props = defineProps<propType>();
@@ -79,6 +85,53 @@ const handleOnBeforeSubmit = () => {
 const handleOnAfterSubmit = () => {
 	isLoading.value = false;
 };
+
+const vMove: Directive = {
+	mounted(el: HTMLElement) {
+		// let moveEl = el.firstElementChild as HTMLElement;
+		let moveEl = el as HTMLElement;
+		const mouseDown = (e: MouseEvent) => {
+			//鼠标点击物体那一刻相对于物体左侧边框的距离=点击时的位置相对于浏览器最左边的距离-物体左边框相对于浏览器最左边的距离
+			console.log(e.clientX, e.clientY, "-----起始", el.offsetLeft);
+			let X = e.clientX - el.offsetLeft;
+			let Y = e.clientY - el.offsetTop;
+			console.log(X, Y, "-----起始");
+			
+			const move = (e: MouseEvent) => {
+				// 获取拖拽元素的位置
+				let left = e.clientX - X;
+				let top = e.clientY - Y;
+				// if (left <= 0) {
+				// 	left = 0;
+				// } else if (
+				// 	left >=
+				// 	document.documentElement.clientWidth - el.offsetWidth
+				// ) {
+				// 	left =
+				// 		document.documentElement.clientWidth - el.offsetWidth;
+				// }
+
+				// if (top <= 0) {
+				// 	top = 0;
+				// } else if (
+				// 	top >
+				// 	document.documentElement.clientHeight - el.offsetHeight
+				// ) {
+				// 	top =
+				// 		document.documentElement.clientHeight - el.offsetHeight;
+				// }
+
+				el.style.left = left + "px";
+				el.style.top = top + "px";
+			};
+			document.addEventListener("mousemove", move);
+			document.addEventListener("mouseup", () => {
+				document.removeEventListener("mousemove", move);
+			});
+		};
+		moveEl.addEventListener("mousedown", mouseDown);
+	},
+};
 </script>
 
 <style lang="scss" scoped>
@@ -95,6 +148,10 @@ const handleOnAfterSubmit = () => {
 	align-items: center;
 	flex-direction: column;
 	.full-form {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 		overflow-y: auto;
 		overflow-x: hidden;
 		background-color: #fff;

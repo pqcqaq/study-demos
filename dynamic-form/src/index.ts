@@ -368,6 +368,7 @@ export type FormConfig = {
 	allowDirectClose?: boolean;
 	submit?: (values: Record<string, any>) => void;
 	style?: StyleValue;
+	draggable?: boolean;
 };
 
 export function useFullScreenDyForm(config: FormConfig) {
@@ -392,6 +393,7 @@ export function useFullScreenDyForm(config: FormConfig) {
 			}
 		},
 		style: config.style || {},
+		draggable: config.draggable || false,
 	});
 	app.mount(div);
 }
