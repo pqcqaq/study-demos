@@ -180,7 +180,7 @@ const vMove: Directive = {
 		overflow-x: hidden;
 		background-color: #fff;
 		padding: 20px;
-		border-radius: 5%;
+		border-radius: 15px;
 		border: 1px solid #ccc;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 		display: inline-block;
