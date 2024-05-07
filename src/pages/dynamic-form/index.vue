@@ -43,6 +43,11 @@ const testPopup = () => {
 			});
 			message.success("提交成功" + JSON.stringify(data));
 		},
+		style: {
+			borderRadius: "30px",
+			backgroundColor: "rgba(255,255,255,0.8)",
+			backdropFilter: "blur(10px)",
+		},
 	});
 };
 

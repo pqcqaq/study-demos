@@ -1,13 +1,13 @@
 <template>
 	<div class="fullscreen">
-		<div class="full-form">
+		<div class="full-form" :style="props.style">
 			<DynamicForm
 				:schema="props.schema"
 				v-model="formModel"
 				:show-btns="props.showBtns"
 				class="form"
 				:on-before-submit="handleOnBeforeSubmit"
-                :on-submit="props.onSubmit"
+				:on-submit="props.onSubmit"
 				:on-after-submit="handleOnAfterSubmit"
 			/>
 			<div class="btns">
@@ -25,6 +25,7 @@ import { DyForm } from "..";
 import DynamicForm from "../DynamicForm.vue";
 import AButton from "ant-design-vue/es/button";
 import { Modal } from "ant-design-vue";
+import { StyleValue } from "vue";
 
 type propType = {
 	schema: DyForm;
@@ -35,8 +36,9 @@ type propType = {
 	};
 	init: Record<string, any>;
 	onCancel: () => void;
-    allowDirectClose: boolean;
-    onSubmit?: (formData: Record<string, any>) => void;
+	allowDirectClose: boolean;
+	onSubmit?: (formData: Record<string, any>) => void;
+	style: StyleValue;
 };
 
 const props = defineProps<propType>();
@@ -71,11 +73,11 @@ const handleClose = () => {
 };
 
 const handleOnBeforeSubmit = () => {
-    isLoading.value = true;
+	isLoading.value = true;
 };
 
 const handleOnAfterSubmit = () => {
-    isLoading.value = false;
+	isLoading.value = false;
 };
 </script>
 

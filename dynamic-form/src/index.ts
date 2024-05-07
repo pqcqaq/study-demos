@@ -19,7 +19,7 @@ import type {
 	UploadChangeParam,
 	UploadProps,
 } from "ant-design-vue";
-import { Component, Slot, VNode, createApp, ref } from "vue";
+import { Component, Slot, StyleValue, VNode, createApp, ref } from "vue";
 import AutoCompleteInput from "./components/AutoCompleteInput.vue";
 import CustomSwitch from "./components/CustomSwitch.vue";
 import TagShow from "./components/TagShow.vue";
@@ -40,6 +40,12 @@ export const componentsMap: Record<
 > = {
 	Text: {
 		component: Input,
+	},
+	Password: {
+		component: Input,
+		defaultProps: {
+			type: "password",
+		},
 	},
 	Textarea: {
 		component: Textarea,
@@ -355,6 +361,7 @@ export type FormConfig = {
 	init?: Record<string, any>;
 	allowDirectClose?: boolean;
 	submit?: (values: Record<string, any>) => void;
+	style?: StyleValue;
 };
 
 export function useFullScreenDyForm(config: FormConfig) {
@@ -378,6 +385,7 @@ export function useFullScreenDyForm(config: FormConfig) {
 				console.error(e);
 			}
 		},
+		style: config.style || {},
 	});
 	app.mount(div);
 }
