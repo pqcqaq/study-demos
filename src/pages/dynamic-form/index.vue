@@ -89,6 +89,24 @@ const test: DyForm = {
 	items: [
 		// 姓名班级学号
 		{
+			label: "头像",
+			field: "avatar",
+			component: "Upload",
+			componentProps: {
+				uploadProps: {
+					accept: "image/*",
+					maxCount: 1,
+					multiple: false,
+					listType: "picture-card",
+					customRequest: (info: any) => {
+						console.log("info", info);
+					},
+				},
+				uploadType: "Image",
+			},
+			value: [],
+		},
+		{
 			label: "姓名",
 			field: "name",
 			component: "Text",
@@ -682,6 +700,11 @@ const formSchema: DyForm = {
 					maxCount: 1,
 					multiple: false,
 					listType: "picture-card",
+					customRequest: (info: any) => {
+						setTimeout(() => {
+							info.onSuccess("ok", info.file);
+						}, 1000);
+					},
 				},
 				uploadType: "Image",
 			},
