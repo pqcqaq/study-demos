@@ -35,7 +35,7 @@ const testPopup = () => {
 		init: {
 			name: "test init",
 		},
-		submit: async (model) => {
+		submit: async (model, close) => {
 			const data = await new Promise((resolve) => {
 				setTimeout(() => {
 					console.log("model", model);
@@ -43,6 +43,7 @@ const testPopup = () => {
 				}, 150);
 			});
 			message.success("提交成功" + JSON.stringify(data));
+			close();
 		},
 		style: {
 			backgroundColor: "rgba(255,255,255,0.8)",
@@ -375,7 +376,6 @@ const changeSchema = () => {
 const handleTest = async () => {
 	schema.value = test;
 };
-
 </script>
 
 <style lang="scss" scoped>

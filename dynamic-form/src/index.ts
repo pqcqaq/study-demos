@@ -366,7 +366,7 @@ export type FormConfig = {
 	};
 	init?: Record<string, any>;
 	allowDirectClose?: boolean;
-	submit?: (values: Record<string, any>) => void;
+	submit?: (values: Record<string, any>, close: Function) => void;
 	style?: CSSProperties;
 	draggable?: boolean;
 };
@@ -386,8 +386,7 @@ export function useFullScreenDyForm(config: FormConfig) {
 		allowDirectClose: config.allowDirectClose || false,
 		onSubmit: (model: Record<string, any>) => {
 			try {
-				config.submit?.(model);
-				handleClose();
+				config.submit?.(model, handleClose);
 			} catch (e) {
 				console.error(e);
 			}
