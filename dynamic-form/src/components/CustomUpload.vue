@@ -17,8 +17,8 @@
 				</a-button>
 			</div>
 			<div class="image" v-if="props.uploadType == 'Image'">
-				<img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-				<div v-else>
+				<!-- <img v-if="imageUrl" :src="imageUrl" alt="avatar" /> -->
+				<div>
 					<loading-outlined v-if="loading"></loading-outlined>
 					<plus-outlined v-else></plus-outlined>
 					<div class="ant-upload-text">{{ uploadMsg }}</div>
@@ -79,14 +79,14 @@ const model = computed({
 		emit("update:value", value);
 	},
 });
-function getBase64(img: Blob, callback: (base64Url: string) => void) {
-	const reader = new FileReader();
-	reader.addEventListener("load", () => callback(reader.result as string));
-	reader.readAsDataURL(img);
-}
+// function getBase64(img: Blob, callback: (base64Url: string) => void) {
+// 	const reader = new FileReader();
+// 	reader.addEventListener("load", () => callback(reader.result as string));
+// 	reader.readAsDataURL(img);
+// }
 
 const loading = ref<boolean>(false);
-const imageUrl = ref<string>("");
+// const imageUrl = ref<string>("");
 
 const imageHandleChange = (info: UploadChangeParam) => {
 	if (info.file.status === "uploading") {
@@ -94,10 +94,10 @@ const imageHandleChange = (info: UploadChangeParam) => {
 		return;
 	}
 	if (info.file.status === "done") {
-		getBase64(info.file.originFileObj as Blob, (base64Url: string) => {
-			imageUrl.value = base64Url;
-			loading.value = false;
-		});
+		// getBase64(info.file.originFileObj as Blob, (base64Url: string) => {
+		// imageUrl.value = base64Url;
+		loading.value = false;
+		// });
 	}
 	if (info.file.status === "error") {
 		loading.value = false;
