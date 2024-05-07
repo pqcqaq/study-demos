@@ -665,15 +665,37 @@ const formSchema: DyForm = {
 				}
 			},
 		},
+		// avatar
 		{
 			label: "头像",
 			field: "avatar",
 			component: "Upload",
 			componentProps: {
-				accept: "image/*",
-				action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-				fileList: [],
-				maxCount: 1,
+				uploadProps: {
+					accept: "image/*",
+					action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+					maxCount: 1,
+					multiple: false,
+					listType: "picture-card",
+				},
+				uploadType: "Image",
+			},
+			value: [],
+		},
+		// images
+		{
+			label: "图片",
+			field: "images",
+			component: "Upload",
+			componentProps: {
+				uploadProps: {
+					accept: "image/*",
+					action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+					maxCount: 5,
+					multiple: true,
+					listType: "picture",
+				},
+				uploadType: "Dragger",
 			},
 		},
 		// rate

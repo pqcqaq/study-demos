@@ -21,6 +21,8 @@ declare module 'vue' {
     ARadioGroup: typeof import('ant-design-vue/es')['RadioGroup']
     ASwitch: typeof import('ant-design-vue/es')['Switch']
     ATag: typeof import('ant-design-vue/es')['Tag']
+    AUpload: typeof import('ant-design-vue/es')['Upload']
+    AUploadDragger: typeof import('ant-design-vue/es')['UploadDragger']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']

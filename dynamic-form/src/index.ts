@@ -6,7 +6,6 @@ import {
 	DatePicker,
 	Rate,
 	Slider,
-	Upload,
 	TreeSelect,
 	TimePicker,
 	Mentions,
@@ -17,6 +16,8 @@ import type {
 	MentionsProps,
 	TimePickerProps,
 	TreeSelectProps,
+	UploadChangeParam,
+	UploadProps,
 } from "ant-design-vue";
 import { Component, Slot, VNode, createApp, ref } from "vue";
 import AutoCompleteInput from "./components/AutoCompleteInput.vue";
@@ -27,6 +28,7 @@ import AsyncCheckBox from "./components/AsyncCheckBox.vue";
 import FullScreenDyForm from "./components/FullScreenDyForm.vue";
 import CustomDivider from "./components/CustomDivider.vue";
 import CustomAvatarGroup from "./components/CustomAvatarGroup.vue";
+import CustomUpload from "./components/CustomUpload.vue";
 
 // 表单域组件类型
 export const componentsMap: Record<
@@ -67,7 +69,7 @@ export const componentsMap: Record<
 		component: CustomSwitch,
 	},
 	Upload: {
-		component: Upload,
+		component: CustomUpload,
 	},
 	TreeSelect: {
 		component: TreeSelect,
@@ -114,6 +116,17 @@ export type AvatarGroupItem = {
 	label?: string;
 };
 
+export type UploadType = "Button" | "Dragger" | "Image";
+
+export type UploadEvents = {
+	change?: (file: UploadChangeParam) => void;
+	remove?: (file: File) => void;
+	download?: (file: File) => void;
+	drop?: (e: DragEvent) => void;
+	preview?: (file: File) => void;
+	reject?: (file: File) => void;
+};
+
 export type DyFormItem = {
 	label: string;
 	field: string;
@@ -153,17 +166,6 @@ export type DyFormItem = {
 		size?: "default" | "small" | "large";
 		unCheckedChildren?: string;
 		unCheckedValue?: string | number | boolean;
-		accept?: string;
-		action?: string;
-		beforeUpload?: (
-			file: File,
-			fileList: File[]
-		) => boolean | Promise<boolean>;
-		customRequest?: (options: { action: string; file: File }) => void;
-		data?: Record<string, any>;
-		directory?: boolean;
-		fileList?: File[];
-		headers?: Record<string, any>;
 		maxCount?: number;
 		method?: string;
 		multiple?: boolean;
@@ -242,6 +244,9 @@ export type DyFormItem = {
 			srcset?: string;
 		};
 		avatarGroupValue?: AvatarGroupItem[];
+		uploadProps?: UploadProps;
+		uploadEvent?: UploadEvents;
+		uploadType?: UploadType;
 	};
 	componentEvent?: {
 		[T: string]: Function;
