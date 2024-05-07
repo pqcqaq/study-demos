@@ -58,7 +58,7 @@ const alterData = computed({
 });
 
 const finalSplitWord = computed(() => props.splitWord || ",");
-const title = computed(() => props.title || "内容");
+const title = computed(() => props.title || "");
 const enableSplit = computed(() => !!props.enableSplit);
 
 const createFilter = (arr: { value: string }[], key: string) => {

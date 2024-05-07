@@ -26,6 +26,7 @@ import AsyncRadio from "./components/AsyncRadio.vue";
 import AsyncCheckBox from "./components/AsyncCheckBox.vue";
 import FullScreenDyForm from "./components/FullScreenDyForm.vue";
 import CustomDivider from "./components/CustomDivider.vue";
+import CustomAvatarGroup from "./components/CustomAvatarGroup.vue";
 
 // 表单域组件类型
 export const componentsMap: Record<
@@ -86,6 +87,9 @@ export const componentsMap: Record<
 	Divider: {
 		component: CustomDivider,
 	},
+	AvatarGroup: {
+		component: CustomAvatarGroup,
+	},
 };
 
 export type Options = Array<{
@@ -102,6 +106,12 @@ export type OptionsGetter = Options | (() => Options | Promise<Options>);
 export type AutoInputList = {
 	label?: string;
 	value: string;
+};
+
+export type AvatarGroupItem = {
+	key: string | number;
+	src: string;
+	label?: string;
 };
 
 export type DyFormItem = {
@@ -202,6 +212,36 @@ export type DyFormItem = {
 		dashed?: boolean;
 		danger?: boolean;
 		dividerText?: string;
+		groupProps?: {
+			maxCount?: number;
+			maxPopoverPlacement?: "top" | "bottom";
+			maxPopoverTrigger?: "hover" | "click" | "focus";
+			maxStyle?: Partial<CSSStyleDeclaration>;
+			size?:
+				| "small"
+				| "default"
+				| "large"
+				| number
+				| { xs: number; sm: number };
+			shape?: "circle" | "square";
+		};
+		avatarProps?: {
+			alt?: string;
+			crossOrigin?: "anonymous" | "use-credentials" | "";
+			draggable?: boolean;
+			gap?: number;
+			icon?: VNode | Slot;
+			loadError?: () => void;
+			shape?: "circle" | "square";
+			size?:
+				| "small"
+				| "default"
+				| "large"
+				| number
+				| { xs: number; sm: number };
+			srcset?: string;
+		};
+		avatarGroupValue?: AvatarGroupItem[];
 	};
 	componentEvent?: {
 		[T: string]: Function;

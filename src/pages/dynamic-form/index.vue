@@ -17,6 +17,7 @@
 		<a-button @click="changeSchema" size="large">修改Schema</a-button>
 		<a-button @click="handleTest" size="large">测试Schema</a-button>
 		<a-button @click="testPopup" size="large">测试popup</a-button>
+		<a-button @click="testAvatars" size="large">测试头像组</a-button>
 	</div>
 </template>
 
@@ -866,6 +867,48 @@ const schema: Ref<DyForm> = ref<DyForm>(formSchema) as any;
 const model = ref<Record<string, any>>({
 	name: "百里守约",
 });
+
+const testAvatarGroup: DyForm = {
+	items: [
+		{
+			label: "AvatarGroup",
+			field: "avatarGroup",
+			component: "AvatarGroup",
+			componentProps: {
+				groupProps: {
+					maxCount: 2,
+					maxPopoverPlacement: "bottom",
+				},
+				avatarProps: {
+					size: 64,
+					shape: "square",
+					crossOrigin: "anonymous",
+				},
+				avatarGroupValue: [
+					{
+						key: "W",
+						src: "",
+						label: "Lily",
+					},
+					{
+						key: "A",
+						src: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+						label: "Lily",
+					},
+					{
+						key: "B",
+						src: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+						label: "Lily",
+					},
+				],
+			},
+		},
+	],
+};
+
+const testAvatars = () => {
+	schema.value = testAvatarGroup;
+};
 
 const changeModel = () => {
 	model.value = {
