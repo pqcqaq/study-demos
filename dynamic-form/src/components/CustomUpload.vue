@@ -48,6 +48,10 @@ import { UploadChangeParam, UploadProps, message } from "ant-design-vue";
 import { computed, ref } from "vue";
 import { UploadEvents, UploadType } from "..";
 import { FileType } from "ant-design-vue/es/upload/interface";
+import UploadOutlined from "@ant-design/icons-vue/UploadOutlined";
+import LoadingOutlined from "@ant-design/icons-vue/LoadingOutlined";
+import PlusOutlined from "@ant-design/icons-vue/PlusOutlined";
+import InboxOutlined from "@ant-design/icons-vue/InboxOutlined";
 
 type PropType = {
 	value: File[] | undefined;

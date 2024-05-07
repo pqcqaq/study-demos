@@ -880,12 +880,15 @@ const formSchema: DyForm = {
 		},
 	],
 	onSubmit: async (model) => {
-		await new Promise((resolve) => {
+		const data = await new Promise((resolve) => {
 			setTimeout(() => {
 				console.log("model", model);
-				resolve(null);
+				resolve(model);
 			}, 1000);
 		});
+		const string = JSON.stringify(data);
+		console.log(string);
+		message.success("提交成功" + string);
 	},
 };
 
