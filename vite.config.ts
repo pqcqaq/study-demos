@@ -39,4 +39,18 @@ export default defineConfig({
 			},
 		},
 	},
+	build: {
+		minify: "terser",
+		rollupOptions: {
+			// 分包配置
+			output: {
+				manualChunks(id) {
+					if (id.includes("node_modules")) {
+						return id.toString().split("node_modules/")[1].split("/")[0];
+					}
+				},
+			},
+		},
+	},
 });
+
