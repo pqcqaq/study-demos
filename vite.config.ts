@@ -7,6 +7,7 @@ import {
 	ElementPlusResolver,
 } from "unplugin-vue-components/resolvers";
 import Inspect from "vite-plugin-inspect";
+import { compression } from 'vite-plugin-compression2'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -26,6 +27,12 @@ export default defineConfig({
 		}),
 		vue(),
 		Inspect(),
+		compression({
+            threshold:2000, // 设置只有超过 2k 的文件才执行压缩
+            deleteOriginalAssets:false, // 设置是否删除原文件
+            skipIfLargerOrEqual:true, // 如果压缩后的文件大小与原文件大小一致或者更大时，不进行压缩
+            // 其他的属性暂不需要配置，使用默认即可
+        })
 	],
 	server: {
 		/** 接口代理 */
@@ -41,6 +48,12 @@ export default defineConfig({
 	},
 	build: {
 		minify: "terser",
+		terserOptions: {
+            compress: {
+                drop_console: true,
+                drop_debugger: true,
+            },
+        },
 		rollupOptions: {
 			// 分包配置
 			output: {
