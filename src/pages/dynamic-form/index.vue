@@ -45,10 +45,10 @@ const testPopup = () => {
 			message.success("提交成功" + JSON.stringify(data));
 		},
 		style: {
-			borderRadius: "30px",
 			backgroundColor: "rgba(255,255,255,0.8)",
 			backdropFilter: "blur(10px)",
 		},
+		draggable: true,
 	});
 };
 
@@ -376,16 +376,6 @@ const handleTest = async () => {
 	schema.value = test;
 };
 
-// watch(
-// 	() => model.value,
-// 	(newVal) => {
-// 		console.log("formModelValue", JSON.stringify(newVal));
-// 	},
-// 	{
-// 		deep: true,
-// 		immediate: true,
-// 	}
-// );
 </script>
 
 <style lang="scss" scoped>

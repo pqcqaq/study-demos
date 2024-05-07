@@ -3,6 +3,7 @@
 		<div
 			class="full-form"
 			v-move
+			v-slide-in
 			:style="{
 				...props.style,
 			}"
@@ -17,9 +18,15 @@
 				:on-after-submit="handleOnAfterSubmit"
 			/>
 			<div class="btns">
-				<a-button danger @click="handleClose" :disabled="isLoading"
-					>取消</a-button
+				<a-button
+					shape="circle"
+					type="primary"
+					danger
+					@click="handleClose"
+					:disabled="isLoading"
 				>
+					<CloseOutlined
+				/></a-button>
 			</div>
 		</div>
 	</div>
@@ -31,6 +38,7 @@ import { DyForm } from "..";
 import DynamicForm from "../DynamicForm.vue";
 import AButton from "ant-design-vue/es/button";
 import { Modal } from "ant-design-vue";
+import { CloseOutlined } from "@ant-design/icons-vue";
 
 type propType = {
 	schema: DyForm;
@@ -88,48 +96,67 @@ const handleOnAfterSubmit = () => {
 
 const vMove: Directive = {
 	mounted(el: HTMLElement) {
-		// let moveEl = el.firstElementChild as HTMLElement;
+		if (!props.draggable) {
+			return;
+		}
 		let moveEl = el as HTMLElement;
 		const mouseDown = (e: MouseEvent) => {
-			//鼠标点击物体那一刻相对于物体左侧边框的距离=点击时的位置相对于浏览器最左边的距离-物体左边框相对于浏览器最左边的距离
-			console.log(e.clientX, e.clientY, "-----起始", el.offsetLeft);
-			let X = e.clientX - el.offsetLeft;
-			let Y = e.clientY - el.offsetTop;
-			console.log(X, Y, "-----起始");
-			
+			const elNowPos = {
+				x: moveEl.getBoundingClientRect().x,
+				y: moveEl.getBoundingClientRect().y,
+			};
+			const mouseBefore: { x: number; y: number } = {
+				x: e.clientX,
+				y: e.clientY,
+			};
+			const elShape = {
+				width: moveEl.getBoundingClientRect().width,
+				height: moveEl.getBoundingClientRect().height,
+			};
 			const move = (e: MouseEvent) => {
-				// 获取拖拽元素的位置
-				let left = e.clientX - X;
-				let top = e.clientY - Y;
-				// if (left <= 0) {
-				// 	left = 0;
-				// } else if (
-				// 	left >=
-				// 	document.documentElement.clientWidth - el.offsetWidth
-				// ) {
-				// 	left =
-				// 		document.documentElement.clientWidth - el.offsetWidth;
-				// }
-
-				// if (top <= 0) {
-				// 	top = 0;
-				// } else if (
-				// 	top >
-				// 	document.documentElement.clientHeight - el.offsetHeight
-				// ) {
-				// 	top =
-				// 		document.documentElement.clientHeight - el.offsetHeight;
-				// }
-
-				el.style.left = left + "px";
-				el.style.top = top + "px";
+				// 设置鼠标样式
+				moveEl.style.cursor = "move";
+				const mouseMove: { x: number; y: number } = {
+					x: e.clientX - mouseBefore.x,
+					y: e.clientY - mouseBefore.y,
+				};
+				const offset = {
+					x: elNowPos.x + mouseMove.x,
+					y: elNowPos.y + mouseMove.y,
+				};
+				// 判断是否超出边界
+				if (offset.x < 15 || offset.y < 15) {
+					return;
+				}
+				// 判断右下边界
+				if (
+					offset.x + elShape.width > window.innerWidth - 30 ||
+					offset.y + elShape.height > window.innerHeight - 15
+				) {
+					return;
+				}
+				// 更新拖拽元素的位置
+				moveEl.style.left = offset.x + "px";
+				moveEl.style.top = offset.y + "px";
 			};
 			document.addEventListener("mousemove", move);
 			document.addEventListener("mouseup", () => {
+				// 取消鼠标样式
+				moveEl.style.cursor = "default";
 				document.removeEventListener("mousemove", move);
 			});
 		};
+
+		moveEl.style.position = "absolute"; // 确保拖拽元素的定位方式为绝对定位
 		moveEl.addEventListener("mousedown", mouseDown);
+	},
+	// 取消挂载时注销事件
+	unmounted(el: HTMLElement) {
+		if (!props.draggable) {
+			return;
+		}
+		let moveEl = el as HTMLElement;
+		moveEl.removeEventListener("mousedown", () => {});
 	},
 };
 </script>
@@ -147,29 +174,32 @@ const vMove: Directive = {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	display: flex;
 	.full-form {
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
 		overflow-y: auto;
 		overflow-x: hidden;
 		background-color: #fff;
 		padding: 20px;
-		border-radius: 5px;
+		border-radius: 5%;
 		border: 1px solid #ccc;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		margin-top: 5%;
-		margin-bottom: 5%;
 		display: inline-block;
 		max-width: 80%;
+		max-height: 90%;
+		position: relative;
 		.form {
 			width: 100%;
 		}
 		.btns {
+			// 从右到左排列，放在表单的右上角
+			position: absolute;
+			top: 10px;
+			right: 12px;
 			display: flex;
 			justify-content: center;
-			margin-top: 20px;
+			align-items: center;
+			flex-direction: row-reverse;
+			gap: 10px;
 		}
 	}
 }
