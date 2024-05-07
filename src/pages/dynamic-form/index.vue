@@ -40,7 +40,7 @@ const testPopup = () => {
 				setTimeout(() => {
 					console.log("model", model);
 					resolve(model);
-				}, 150);
+				}, 1500);
 			});
 			message.success("提交成功" + JSON.stringify(data));
 			close();

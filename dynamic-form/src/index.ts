@@ -384,9 +384,9 @@ export function useFullScreenDyForm(config: FormConfig) {
 		init: config.init || {},
 		onCancel: handleClose,
 		allowDirectClose: config.allowDirectClose || false,
-		onSubmit: (model: Record<string, any>) => {
+		onSubmit: async (model: Record<string, any>) => {
 			try {
-				config.submit?.(model, handleClose);
+				await config.submit?.(model, handleClose);
 			} catch (e) {
 				console.error(e);
 			}
