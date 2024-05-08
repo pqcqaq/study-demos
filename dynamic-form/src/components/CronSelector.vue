@@ -4,7 +4,7 @@
 			class="language"
 			type="text"
 			@click="i18n = i18n === 'en' ? 'cn' : 'en'"
-			>{{ i18n == "cn" ? "中文" : "英语" }}</a-button
+			>{{ i18n == "cn" ? "中文" : "English" }}</a-button
 		>
 		<a-tabs default-active-key="second">
 			<a-tab-pane key="second">
