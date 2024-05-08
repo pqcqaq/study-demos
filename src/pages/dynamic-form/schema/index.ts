@@ -1,5 +1,6 @@
 import { message } from "ant-design-vue";
 import { DyForm, Options } from "../../../../dynamic-form/src";
+// import { Slot, VNode } from "vue";
 
 const getOption = async () => {
 	return new Promise<Options>((resolve, reject) => {
@@ -886,3 +887,35 @@ export const cornSchema: DyForm = {
 		},
 	],
 };
+
+// export const testSlot: Slot = (): VNode[] => {
+// 	return [
+// 		{
+// 			type: "div",
+// 			props: {
+// 				class: "slot",
+// 			},
+// 			children: {
+// 				type: "p",
+// 				props: {
+// 					class: "slot-title",
+// 				},
+// 				children: "这是一个插槽",
+// 			},
+// 			key: "slot",
+// 			ref: null,
+// 			scopeId: null,
+// 			component: null,
+// 			dirs: [],
+// 			transition: null,
+// 			el: null,
+// 			anchor: null,
+// 			target: null,
+// 			targetAnchor: null,
+// 			suspense: null,
+// 			shapeFlag: 4,
+// 			patchFlag: 16,
+// 			appContext: null,
+// 		},
+// 	];
+// };
