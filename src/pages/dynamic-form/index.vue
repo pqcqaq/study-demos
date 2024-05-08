@@ -18,6 +18,7 @@
 		<a-button @click="handleTest" size="large">测试Schema</a-button>
 		<a-button @click="testPopup" size="large">测试popup</a-button>
 		<a-button @click="testAvatars" size="large">测试头像组</a-button>
+		<a-button @click="testCorn" size="large">测试Corn表达式</a-button>
 	</div>
 </template>
 
@@ -27,7 +28,11 @@ import { Ref, ref } from "vue";
 import { DyForm, DyFormItem } from "../../../dynamic-form/src";
 import { useFullScreenDyForm } from "../../../dynamic-form/src";
 import { message } from "ant-design-vue";
-import { schema as formSchema, test } from "./schema";
+import { schema as formSchema, test, cornSchema } from "./schema";
+
+const testCorn = () => {
+	schema.value = cornSchema;
+};
 
 const testPopup = () => {
 	useFullScreenDyForm({

@@ -856,3 +856,33 @@ export const test: DyForm = {
 		},
 	],
 };
+
+export const cornSchema: DyForm = {
+	title: "dynamicForm",
+	items: [
+		{
+			label: "Corn",
+			field: "corn",
+			component: "Corn",
+			componentProps: {
+				allowClear: true,
+				showCount: true,
+				maxlength: 20,
+				style: {
+					width: "400px",
+				},
+			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请输入Corn",
+						trigger: "blur",
+					},
+				],
+				colon: false,
+				tooltip: "在这里输入Corn",
+			},
+		},
+	],
+};

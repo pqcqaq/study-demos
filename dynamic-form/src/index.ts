@@ -29,6 +29,7 @@ import FullScreenDyForm from "./components/FullScreenDyForm.vue";
 import CustomDivider from "./components/CustomDivider.vue";
 import CustomAvatarGroup from "./components/CustomAvatarGroup.vue";
 import CustomUpload from "./components/CustomUpload.vue";
+import CronInput from "./components/CronInput.vue";
 import { Dayjs } from "dayjs";
 
 // 表单域组件类型
@@ -98,6 +99,9 @@ export const componentsMap: Record<
 	},
 	AvatarGroup: {
 		component: CustomAvatarGroup,
+	},
+	Corn: {
+		component: CronInput,
 	},
 };
 
