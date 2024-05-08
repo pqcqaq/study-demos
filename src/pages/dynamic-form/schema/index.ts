@@ -726,6 +726,11 @@ export const test: DyForm = {
 					},
 				},
 				uploadType: "Image",
+				// 将元素居中放置
+				style: {
+					display: "flex",
+					justifyContent: "center",
+				},
 			},
 			value: [],
 		},
