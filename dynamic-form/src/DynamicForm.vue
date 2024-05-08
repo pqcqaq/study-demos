@@ -33,10 +33,10 @@
 					"
 				>
 					<component
-						:is="componentsMap[item.component].component"
+						:is="componentsMap[item.component]?.component"
 						v-bind="{
 							...item.componentProps,
-							...componentsMap[item.component].defaultProps,
+							...componentsMap[item.component]?.defaultProps,
 						}"
 						v-model:value="formModel[item.field]"
 						:class="
@@ -313,18 +313,6 @@ watch(
 		}
 	}
 );
-
-// watch(
-// 	() => props.schema,
-// 	(newVal) => {
-// 		initForm();
-// 		hasNext.value = newVal.items.some((item) => item.next);
-// 	},
-// 	{
-// 		deep: true,
-// 		immediate: true,
-// 	}
-// );
 
 // 暴露方法
 defineExpose({

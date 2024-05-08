@@ -369,6 +369,8 @@ export type FormConfig = {
 	submit?: (values: Record<string, any>, close: Function) => void;
 	style?: CSSProperties;
 	draggable?: boolean;
+	title?: string;
+	defaultValues?: Record<string, any>;
 };
 
 export function useFullScreenDyForm(config: FormConfig) {
@@ -378,8 +380,15 @@ export function useFullScreenDyForm(config: FormConfig) {
 	};
 	const div = document.createElement("div");
 	document.body.appendChild(div);
+	const schemaWithDefaultValues = {
+		...config.schema,
+		items: config.schema.items.map((item) => ({
+			...item,
+			value: config.defaultValues?.[item.field] || item.value,
+		})),
+	};
 	const app = createApp(FullScreenDyForm, {
-		schema: config.schema,
+		schema: schemaWithDefaultValues,
 		showBtns: config.showBtns || { clearAll: 1, reset: 1, submit: 1 },
 		init: config.init || {},
 		onCancel: handleClose,
@@ -393,6 +402,7 @@ export function useFullScreenDyForm(config: FormConfig) {
 		},
 		style: config.style || {},
 		draggable: config.draggable || false,
+		title: config.title,
 	});
 	app.mount(div);
 }

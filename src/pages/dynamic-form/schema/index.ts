@@ -32,7 +32,7 @@ const getOption = async () => {
 	});
 };
 
-const formSchema: DyForm = {
+export const schema: DyForm = {
 	title: "dynamicForm",
 	formProps: {
 		labelCol: { span: 4 },
@@ -706,4 +706,153 @@ const formSchema: DyForm = {
 	},
 };
 
-export const schema = formSchema;
+export const test: DyForm = {
+	title: "dynamicForm",
+	items: [
+		// 姓名班级学号
+		{
+			label: "头像",
+			field: "avatar",
+			component: "Upload",
+			componentProps: {
+				uploadProps: {
+					accept: "image/*",
+					maxCount: 1,
+					multiple: false,
+					listType: "picture-card",
+					customRequest: (info: any) => {
+						console.log("info", info);
+					},
+				},
+				uploadType: "Image",
+			},
+			value: [],
+		},
+		{
+			label: "姓名",
+			field: "name",
+			component: "Text",
+			componentProps: {
+				allowClear: true,
+				showCount: true,
+				maxlength: 20,
+				style: {
+					width: "400px",
+				},
+			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请输入姓名",
+						trigger: "blur",
+					},
+				],
+				colon: false,
+				tooltip: "在这里输入姓名",
+			},
+		},
+		// 班级
+		{
+			label: "班级",
+			field: "class",
+			component: "Text",
+			componentProps: {
+				allowClear: true,
+				showCount: true,
+				maxlength: 20,
+				style: {
+					width: "400px",
+				},
+			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请输入班级",
+						trigger: "blur",
+					},
+				],
+				colon: false,
+				tooltip: "在这里输入班级",
+			},
+		},
+		// 学号
+		{
+			label: "学号",
+			field: "studentId",
+			component: "Text",
+			componentProps: {
+				allowClear: true,
+				showCount: true,
+				maxlength: 20,
+				style: {
+					width: "400px",
+				},
+			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请输入学号",
+						trigger: "blur",
+					},
+				],
+				colon: false,
+				tooltip: "在这里输入学号",
+			},
+		},
+		// devider
+		{
+			label: "",
+			field: "divider",
+			component: "Divider",
+			componentProps: {
+				orientation: "center",
+				orientationMargin: "10px",
+				dividerText: "下面是@用户组件",
+			},
+		},
+		//Mentions
+		{
+			label: "Mentions",
+			field: "mentions",
+			component: "Mentions",
+			componentProps: {
+				allowClear: true,
+				placeholder: "输入 @ 触发",
+				prefix: ["@"],
+				autofocus: true,
+				options: [
+					{
+						value: "百里守约",
+						label: "百里守约",
+					},
+					{
+						value: "安琪拉",
+						label: "安琪拉",
+					},
+					{
+						value: "李白",
+						label: "李白",
+					},
+					{
+						value: "韩信",
+						label: "韩信",
+					},
+				],
+			},
+			formItemProps: {
+				rules: [
+					{
+						required: true,
+						message: "请输入内容",
+						trigger: "blur",
+					},
+				],
+				colon: false,
+				tooltip: "在这里输入内容",
+			},
+		},
+	],
+};
