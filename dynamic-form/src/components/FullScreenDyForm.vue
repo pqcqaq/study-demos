@@ -1,9 +1,8 @@
 <template>
-	<div class="fullscreen">
+	<div class="fullscreen" v-fade-in-out>
 		<div
 			class="full-form"
 			v-move
-			v-slide-in
 			:style="{
 				...props.style,
 			}"
@@ -56,19 +55,19 @@ type propType = {
 	title?: string;
 };
 
-const props = defineProps<propType>()
-const formModel = ref<Record<string, any>>({})
-const isLoading = ref(false)
-const schema = ref(props.schema)
+const props = defineProps<propType>();
+const formModel = ref<Record<string, any>>({});
+const isLoading = ref(false);
+const schema = ref(props.schema);
 
 onMounted(() => {
-  if (Object.keys(props.init).length > 0) {
-    formModel.value = { ...props.init }
-  }
-  if (props.title) {
-    schema.value.title = props.title
-  }
-})
+	if (Object.keys(props.init).length > 0) {
+		formModel.value = { ...props.init };
+	}
+	if (props.title) {
+		schema.value.title = props.title;
+	}
+});
 
 const handleClose = () => {
 	if (props.allowDirectClose) {
@@ -164,12 +163,25 @@ const vMove: Directive = {
 		moveEl.removeEventListener("mousedown", () => {});
 	},
 };
+
+const vFadeInOut: Directive = {
+	mounted(el: HTMLElement) {
+		el.style.opacity = "0"; // 初始状态设置为透明
+		setTimeout(() => {
+			el.style.transition = "opacity 0.15s";
+			el.style.opacity = "1"; // 淡入
+		}, 0);
+	},
+	beforeUnmount(el: HTMLElement) {
+		el.style.opacity = "0"; // 淡出
+	},
+};
 </script>
 
 <style lang="scss" scoped>
 .fullscreen {
 	position: fixed;
-	z-index: 100;
+	z-index: 1000;
 	top: 0;
 	left: 0;
 	width: 100%;

@@ -723,6 +723,7 @@ export const test: DyForm = {
 					listType: "picture-card",
 					customRequest: (info: any) => {
 						console.log("info", info);
+						return Promise.resolve();
 					},
 				},
 				uploadType: "Image",
