@@ -61,6 +61,8 @@ const testPopup = () => {
 			studentId: "202020202020",
 			mentions: "@百里守约",
 		},
+		fadeInOut: true,
+		fadeTime: 150,
 	});
 };
 

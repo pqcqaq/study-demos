@@ -375,6 +375,8 @@ export type FormConfig = {
 	draggable?: boolean;
 	title?: string;
 	defaultValues?: Record<string, any>;
+	fadeInOut?: boolean;
+	fadeTime?: number;
 };
 
 export function useFullScreenDyForm(config: FormConfig) {
@@ -407,6 +409,8 @@ export function useFullScreenDyForm(config: FormConfig) {
 		style: config.style || {},
 		draggable: config.draggable || false,
 		title: config.title,
+		fadeInOut: config.fadeInOut,
+		fadeTime: config.fadeTime,
 	});
 	app.mount(div);
 }

@@ -1,5 +1,11 @@
 <template>
-	<div class="fullscreen" v-fade-in-out>
+	<div
+		class="fullscreen"
+		v-fade-in-out="{
+			fadeTime: props.fadeTime || 150,
+			enable: props.fadeInOut || false,
+		}"
+	>
 		<div
 			class="full-form"
 			v-move
@@ -53,6 +59,8 @@ type propType = {
 	style: CSSProperties;
 	draggable?: boolean;
 	title?: string;
+	fadeInOut?: boolean;
+	fadeTime?: number;
 };
 
 const props = defineProps<propType>();
@@ -164,15 +172,28 @@ const vMove: Directive = {
 	},
 };
 
+type FadeType = {
+	fadeTime: number;
+	enable: boolean;
+};
+
 const vFadeInOut: Directive = {
-	mounted(el: HTMLElement) {
+	mounted(el: HTMLElement, binding) {
+		const config = binding.value as FadeType;
+		if (!config.enable) {
+			return;
+		}
 		el.style.opacity = "0"; // 初始状态设置为透明
 		setTimeout(() => {
-			el.style.transition = "opacity 0.15s";
+			el.style.transition = "opacity " + config.fadeTime + "ms"; // 设置过渡时间
 			el.style.opacity = "1"; // 淡入
 		}, 0);
 	},
-	beforeUnmount(el: HTMLElement) {
+	beforeUnmount(el: HTMLElement, binding) {
+		const config = binding.value as FadeType;
+		if (!config.enable) {
+			return;
+		}
 		el.style.opacity = "0"; // 淡出
 	},
 };
